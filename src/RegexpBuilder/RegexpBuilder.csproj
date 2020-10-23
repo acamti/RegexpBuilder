@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>Acamti.RegexpBuilder</AssemblyName>
+        <RootNamespace>Acamti.RegexpBuilder</RootNamespace>
+        <Company>Acam Services et Conseils TI</Company>
+    </PropertyGroup>
+
+</Project>
