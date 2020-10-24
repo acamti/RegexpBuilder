@@ -1,6 +1,6 @@
 ﻿namespace Acamti.RegexpBuilder.Rules
 {
-    public static class ValueExtensions
+    public static class ValuesExtensions
     {
         public static RegExpPattern Value(this RegExpPattern pattern, string value, bool withParentheses = true)
         {

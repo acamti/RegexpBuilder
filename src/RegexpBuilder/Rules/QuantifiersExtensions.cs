@@ -2,7 +2,7 @@
 
 namespace Acamti.RegexpBuilder.Rules
 {
-    public static class QuantifierExtensions
+    public static class QuantifiersExtensions
     {
         public static RegExpPattern ZeroOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {

@@ -6,40 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Acamti.RegexpBuilder.Tests
 {
     [TestClass]
-    public class TestCollections
+    public class Describe_Quantifiers
     {
-        [TestMethod]
-        public void Test_Simple_Text_Pattern()
-        {
-            const string EXPECTED = "(winter)";
-            const string TRUE_MATCH_INPUT = "The winter season is coming";
-            const string FALSE_MATCH_INPUT = "The summer season is coming";
-
-            var pattern = RegExpPattern
-                .With()
-                .Value("winter");
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            pattern.Match(TRUE_MATCH_INPUT).Should().BeTrue();
-            pattern.Match(FALSE_MATCH_INPUT).Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void Test_Simple_Character_Pattern()
-        {
-            const string EXPECTED = "1";
-            const string TRUE_MATCH_INPUT = "The 1st day of the year";
-            const string FALSE_MATCH_INPUT = "The 2nd day of the year";
-
-            var pattern = RegExpPattern
-                .With()
-                .Value("1");
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            pattern.Match(TRUE_MATCH_INPUT).Should().BeTrue();
-            pattern.Match(FALSE_MATCH_INPUT).Should().BeFalse();
-        }
-
         [TestMethod]
         public void Test_Zero_Or_More_Character_Pattern()
         {
@@ -142,77 +110,6 @@ namespace Acamti.RegexpBuilder.Tests
                 .With()
                 .ZeroOrOne(p => p.Value("duck"))
                 .Value("s");
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
-        }
-
-        [TestMethod]
-        public void Test_Word_Pattern()
-        {
-            const string EXPECTED = @"\w";
-
-            var trueMatchInputs = new List<string>(new[] { "a", "1" });
-            var falseMatchInputs = new List<string>(new[] { ".", " " });
-
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneWordCharacter();
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
-        }
-
-        [TestMethod]
-        public void Test_Non_Word_Pattern()
-        {
-            const string EXPECTED = @"\W";
-
-            var trueMatchInputs = new List<string>(new[] { ".", " " });
-            var falseMatchInputs = new List<string>(new[] { "a", "1" });
-
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneNonWordCharacter();
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
-        }
-
-        [TestMethod]
-        public void Test_Digit_Pattern()
-        {
-            const string EXPECTED = @"\d";
-
-            var trueMatchInputs = new List<string>(new[] { "1" });
-            var falseMatchInputs = new List<string>(new[] { "a", ".", " " });
-
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneDigitCharacter();
-
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
-        }
-
-        [TestMethod]
-        public void Test_Or_Constructs_Pattern()
-        {
-            const string EXPECTED = @"(him|her)";
-
-            var trueMatchInputs = new List<string>(new[] { "him", "her" });
-            var falseMatchInputs = new List<string>(new[] { "they", "them" });
-
-            var pattern = RegExpPattern
-                .With()
-                .Either(
-                    p => p.Value("him", false),
-                    p => p.Value("her", false)
-                );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
             trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
