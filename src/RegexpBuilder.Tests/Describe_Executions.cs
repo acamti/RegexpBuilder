@@ -11,8 +11,6 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_Split_Execution()
         {
             var expected = new[] { "012", "6789" };
-            const string TRUE_MATCH_INPUT = "012-345-6789";
-            const string FALSE_MATCH_INPUT = "(555)-555-5555";
 
             var pattern = RegExpPattern
                 .With()
@@ -20,8 +18,8 @@ namespace Acamti.RegexpBuilder.Tests
                 .Repeat(p => p.AnyOneDigitCharacter(), 3)
                 .Value("-");
 
-            pattern.Split(TRUE_MATCH_INPUT).Should().BeEquivalentTo(expected);
-            pattern.Split(FALSE_MATCH_INPUT).Should().NotBeEquivalentTo(expected);
+            pattern.Split("012-345-6789").Should().BeEquivalentTo(expected);
+            pattern.Split("(555)-555-5555").Should().NotBeEquivalentTo(expected);
         }
 
         [TestMethod]

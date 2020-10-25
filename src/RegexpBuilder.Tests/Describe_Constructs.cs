@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Acamti.RegexpBuilder.Rules;
+﻿using Acamti.RegexpBuilder.Rules;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,9 +12,6 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"him|her";
 
-            var trueMatchInputs = new List<string>(new[] { "him", "her" });
-            var falseMatchInputs = new List<string>(new[] { "they", "them" });
-
             var pattern = RegExpPattern
                 .With()
                 .Either(
@@ -24,17 +20,12 @@ namespace Acamti.RegexpBuilder.Tests
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
         }
 
         [TestMethod]
         public void Test_Conditional_Constructs_Pattern()
         {
             const string EXPECTED = @"(?(\wi\w)him|her)";
-
-            var trueMatchInputs = new List<string>(new[] { "him", "her" });
-            var falseMatchInputs = new List<string>(new[] { "they", "them" });
 
             var pattern = RegExpPattern
                 .With()
@@ -48,8 +39,6 @@ namespace Acamti.RegexpBuilder.Tests
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
         }
 
         [TestMethod]
