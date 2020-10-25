@@ -13,10 +13,24 @@ namespace Acamti.RegexpBuilder.Rules
                 rule =>
                     rule.Invoke(RegExpPattern.With()).ToString());
 
-            pattern.AddRule(
-                new RegExpValue(
-                    $"({string.Join('|', ruleValues)})"
-                ));
+            pattern.Value(
+                $"{string.Join('|', ruleValues)}"
+            );
+
+            return pattern;
+        }
+
+        public static RegExpPattern ConditionallyRule(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            Func<RegExpPattern, RegExpPattern> yes,
+            Func<RegExpPattern, RegExpPattern> no)
+        {
+            var condition = rule.Invoke(RegExpPattern.With());
+            var yesMatch = yes.Invoke(RegExpPattern.With());
+            var noMatch = no.Invoke(RegExpPattern.With());
+
+            pattern.Value($"?({condition}){yesMatch}|{noMatch}");
 
             return pattern;
         }

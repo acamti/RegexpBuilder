@@ -21,8 +21,8 @@ namespace Acamti.RegexpBuilder.Tests
                 .AnyOneWordCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
+            trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
+            falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
         }
 
         [TestMethod]
@@ -38,8 +38,8 @@ namespace Acamti.RegexpBuilder.Tests
                 .AnyOneNonWordCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
+            trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
+            falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
         }
 
         [TestMethod]
@@ -55,8 +55,8 @@ namespace Acamti.RegexpBuilder.Tests
                 .AnyOneDigitCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            trueMatchInputs.ForEach(t => pattern.Match(t).Should().BeTrue());
-            falseMatchInputs.ForEach(t => pattern.Match(t).Should().BeFalse());
+            trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
+            falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
         }
     }
 }

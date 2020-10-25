@@ -19,8 +19,8 @@ namespace Acamti.RegexpBuilder.Tests
                 .Value("winter");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            pattern.Match(TRUE_MATCH_INPUT).Should().BeTrue();
-            pattern.Match(FALSE_MATCH_INPUT).Should().BeFalse();
+            pattern.IsMatch(TRUE_MATCH_INPUT).Should().BeTrue();
+            pattern.IsMatch(FALSE_MATCH_INPUT).Should().BeFalse();
         }
 
         [TestMethod]
@@ -35,8 +35,20 @@ namespace Acamti.RegexpBuilder.Tests
                 .Value("1");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
-            pattern.Match(TRUE_MATCH_INPUT).Should().BeTrue();
-            pattern.Match(FALSE_MATCH_INPUT).Should().BeFalse();
+            pattern.IsMatch(TRUE_MATCH_INPUT).Should().BeTrue();
+            pattern.IsMatch(FALSE_MATCH_INPUT).Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_Repeat_Pattern()
+        {
+            const string EXPECTED = "^(6?6?6?)";
+
+            var pattern = RegExpPattern
+                .StartWith()
+                .Repeat(p => p.ZeroOrOne(p2 => p2.Value("6")), 3, true);
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
     }
 }

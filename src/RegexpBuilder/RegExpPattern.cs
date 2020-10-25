@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Acamti.RegexpBuilder.Rules;
 
 namespace Acamti.RegexpBuilder
 {
@@ -18,6 +19,15 @@ namespace Acamti.RegexpBuilder
         public static RegExpPattern With() =>
             new RegExpPattern();
 
+        public static RegExpPattern StartWith()
+        {
+            var pattern = new RegExpPattern();
+
+            pattern.Value("^");
+
+            return pattern;
+        }
+
         private string Build() =>
             _rules.Aggregate(
                 "",
@@ -30,9 +40,7 @@ namespace Acamti.RegexpBuilder
         {
             var lastRule = _rules.LastOrDefault();
 
-            if ( lastRule is null ) return;
-
-            lastRule.Append(value);
+            lastRule?.Append(value);
         }
     }
 }

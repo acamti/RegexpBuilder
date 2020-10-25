@@ -1,4 +1,7 @@
-﻿namespace Acamti.RegexpBuilder.Rules
+﻿using System;
+using System.Linq;
+
+namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
@@ -13,6 +16,19 @@
                         withParentheses
                             ? $"({value})"
                             : value));
+
+            return pattern;
+        }
+
+        public static RegExpPattern Repeat(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            int time,
+            bool withParentheses)
+        {
+            var rules = Enumerable.Range(0, time).Select(_ => rule.Invoke(RegExpPattern.With()));
+
+            pattern.Value($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}", withParentheses);
 
             return pattern;
         }
