@@ -17,7 +17,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = RegExpPattern
                 .With()
                 .Value("-")
-                .Repeat(p => p.AnyOneDigitCharacter(), 3, false)
+                .Repeat(p => p.AnyOneDigitCharacter(), 3)
                 .Value("-");
 
             pattern.Split(TRUE_MATCH_INPUT).Should().BeEquivalentTo(expected);

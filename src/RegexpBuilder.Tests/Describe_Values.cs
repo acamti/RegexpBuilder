@@ -10,7 +10,7 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Simple_Text_Pattern()
         {
-            const string EXPECTED = "(winter)";
+            const string EXPECTED = "winter";
             const string TRUE_MATCH_INPUT = "The winter season is coming";
             const string FALSE_MATCH_INPUT = "The summer season is coming";
 
@@ -46,7 +46,12 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = RegExpPattern
                 .StartWith()
-                .Repeat(p => p.ZeroOrOne(p2 => p2.Value("6")), 3, true);
+                .Grouped(
+                    p => p.Repeat(
+                        r => r.ZeroOrOne(p2 => p2.Value("6")),
+                        3
+                    )
+                );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }

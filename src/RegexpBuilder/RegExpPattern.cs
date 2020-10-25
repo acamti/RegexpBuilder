@@ -35,12 +35,5 @@ namespace Acamti.RegexpBuilder
 
         public override string ToString() =>
             Build();
-
-        internal void AppendToLastRule(string value)
-        {
-            var lastRule = _rules.LastOrDefault();
-
-            lastRule?.Append(value);
-        }
     }
 }

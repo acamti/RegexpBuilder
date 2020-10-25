@@ -4,21 +4,21 @@
     {
         public static RegExpPattern AnyOneWordCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\w", false);
+            pattern.Value(@"\w");
 
             return pattern;
         }
 
         public static RegExpPattern AnyOneNonWordCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\W", false);
+            pattern.Value(@"\W");
 
             return pattern;
         }
 
         public static RegExpPattern AnyOneDigitCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\d", false);
+            pattern.Value(@"\d");
 
             return pattern;
         }

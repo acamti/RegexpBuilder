@@ -5,17 +5,11 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
-        public static RegExpPattern Value(this RegExpPattern pattern, string value, bool withParentheses = true)
+        public static RegExpPattern Value(this RegExpPattern pattern, string value)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
-            pattern.AddRule(
-                value.Length == 1
-                    ? new RegExpValue(value)
-                    : new RegExpValue(
-                        withParentheses
-                            ? $"({value})"
-                            : value));
+            pattern.AddRule(new RegExpValue(value));
 
             return pattern;
         }
@@ -23,12 +17,24 @@ namespace Acamti.RegexpBuilder.Rules
         public static RegExpPattern Repeat(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
-            int time,
-            bool withParentheses)
+            int time)
         {
-            var rules = Enumerable.Range(0, time).Select(_ => rule.Invoke(RegExpPattern.With()));
+            var rules = Enumerable
+                .Range(0, time)
+                .Select(_ => rule.Invoke(RegExpPattern.With()));
 
-            pattern.Value($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}", withParentheses);
+            pattern.Value($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}");
+
+            return pattern;
+        }
+
+        public static RegExpPattern Grouped(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"({ruleToGroup})");
 
             return pattern;
         }

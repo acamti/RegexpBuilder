@@ -18,10 +18,11 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = RegExpPattern
                 .With()
-                .Either(
-                    p => p.Value("him", false),
-                    p => p.Value("her", false)
-                );
+                .Grouped(
+                    p => p.Either(
+                        i => i.Value("him"),
+                        i => i.Value("her")
+                    ));
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
             trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
@@ -43,8 +44,8 @@ namespace Acamti.RegexpBuilder.Tests
                         .AnyOneWordCharacter()
                         .Value("i")
                         .AnyOneWordCharacter(),
-                    p => p.Value("him", false),
-                    p => p.Value("her", false)
+                    p => p.Value("him"),
+                    p => p.Value("her")
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);

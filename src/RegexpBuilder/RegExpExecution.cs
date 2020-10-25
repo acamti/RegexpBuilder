@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Acamti.RegexpBuilder
 {
@@ -11,7 +12,7 @@ namespace Acamti.RegexpBuilder
             return regExp.IsMatch(input);
         }
 
-        public static string[] Split(this RegExpPattern pattern, string input)
+        public static IEnumerable<string> Split(this RegExpPattern pattern, string input)
         {
             var regExp = new Regex(pattern.ToString());
 
