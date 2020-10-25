@@ -147,5 +147,76 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.IsMatch("they").Should().BeFalse();
             pattern.IsMatch("them").Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Test_IsMatch_11()
+        {
+            var pattern = RegExpPattern
+                .With(true)
+                .Value("hi");
+
+            pattern.IsMatch("hi").Should().BeTrue();
+            pattern.IsMatch("him").Should().BeTrue();
+            pattern.IsMatch("hi ").Should().BeTrue();
+            pattern.IsMatch("him ").Should().BeTrue();
+
+            pattern.IsMatch(" hi").Should().BeFalse();
+            pattern.IsMatch(" him").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_12()
+        {
+            var pattern = RegExpPattern.With()
+                .Value("hi")
+                .Stop();
+
+            pattern.IsMatch("hi").Should().BeTrue();
+            pattern.IsMatch(" hi").Should().BeTrue();
+
+            pattern.IsMatch("hi ").Should().BeFalse();
+            pattern.IsMatch("him").Should().BeFalse();
+            pattern.IsMatch(" him").Should().BeFalse();
+            pattern.IsMatch(" him ").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_13()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .Word(
+                    p => p
+                        .Value("are")
+                        .ZeroOrMore(p2 => p2.AnyOneWordCharacter())
+                );
+
+            pattern.IsMatch("area").Should().BeTrue();
+            pattern.IsMatch("arena").Should().BeTrue();
+
+            pattern.IsMatch("bare").Should().BeFalse();
+            pattern.IsMatch("mare").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_16()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .NonWord(
+                    p => p
+                        .Value("qu")
+                        .OneOrMore(p2 => p2.AnyOneWordCharacter()),
+                    true,
+                    false
+                );
+
+            pattern.IsMatch("equity").Should().BeTrue();
+            pattern.IsMatch("equip").Should().BeTrue();
+            pattern.IsMatch("acquaint").Should().BeTrue();
+
+            pattern.IsMatch("queen").Should().BeFalse();
+            pattern.IsMatch("quiet").Should().BeFalse();
+        }
     }
 }

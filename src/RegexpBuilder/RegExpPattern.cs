@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Acamti.RegexpBuilder.Rules;
 
@@ -7,25 +8,31 @@ namespace Acamti.RegexpBuilder
     public class RegExpPattern
     {
         private readonly List<RegExpValue> _rules;
+        private bool _isStopped;
 
         private RegExpPattern() =>
             _rules = new List<RegExpValue>();
 
         internal void AddRule(RegExpValue rule)
         {
+            if ( _isStopped )
+                throw new Exception("No more rules can be added");
+
             _rules.Add(rule);
         }
 
-        public static RegExpPattern With() =>
-            new RegExpPattern();
+        public static RegExpPattern With(bool hardBegin = false) =>
+            hardBegin
+                ? new RegExpPattern().Value("^")
+                : new RegExpPattern();
 
-        public static RegExpPattern StartWith()
+        public RegExpPattern Stop()
         {
-            var pattern = new RegExpPattern();
+            _rules.Add(new RegExpValue("$"));
 
-            pattern.Value("^");
+            _isStopped = true;
 
-            return pattern;
+            return this;
         }
 
         private string Build() =>
