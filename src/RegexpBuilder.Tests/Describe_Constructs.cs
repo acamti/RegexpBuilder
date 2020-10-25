@@ -11,18 +11,17 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Either_Constructs_Pattern()
         {
-            const string EXPECTED = @"(him|her)";
+            const string EXPECTED = @"him|her";
 
             var trueMatchInputs = new List<string>(new[] { "him", "her" });
             var falseMatchInputs = new List<string>(new[] { "they", "them" });
 
             var pattern = RegExpPattern
                 .With()
-                .Grouped(
-                    p => p.Either(
-                        i => i.Value("him"),
-                        i => i.Value("her")
-                    ));
+                .Either(
+                    i => i.Value("him"),
+                    i => i.Value("her")
+                );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
             trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
@@ -51,6 +50,51 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
             trueMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeTrue());
             falseMatchInputs.ForEach(t => pattern.IsMatch(t).Should().BeFalse());
+        }
+
+        [TestMethod]
+        public void Test_Grouping_Constructs_Pattern()
+        {
+            const string EXPECTED = @"(\d)X(\d)F";
+
+            var pattern = RegExpPattern
+                .With()
+                .Group(p => p.AnyOneDigitCharacter(), true)
+                .Value("X")
+                .Group(p => p.AnyOneDigitCharacter(), true)
+                .Value("F");
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Grouping_Backreference_Constructs_Pattern()
+        {
+            const string EXPECTED = @"(\d)X\1F";
+
+            var pattern = RegExpPattern
+                .With()
+                .Group(p => p.AnyOneDigitCharacter(), true)
+                .Value("X")
+                .GroupValue(0)
+                .Value("F");
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Grouping_Named_Backreference_Constructs_Pattern()
+        {
+            const string EXPECTED = @"(?<One>\d)x\k<One>F";
+
+            var pattern = RegExpPattern
+                .With()
+                .Group(p => p.AnyOneDigitCharacter(), "One")
+                .Value("x")
+                .GroupValue("One")
+                .Value("F");
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
     }
 }

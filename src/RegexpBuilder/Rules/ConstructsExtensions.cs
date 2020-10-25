@@ -30,7 +30,25 @@ namespace Acamti.RegexpBuilder.Rules
             var yesMatch = yes.Invoke(RegExpPattern.With());
             var noMatch = no.Invoke(RegExpPattern.With());
 
-            pattern.Grouped(p => p.Value($"?({condition}){yesMatch}|{noMatch}"));
+            pattern.Value($"(?({condition}){yesMatch}|{noMatch})");
+
+            return pattern;
+        }
+
+        public static RegExpPattern GroupValue(
+            this RegExpPattern pattern,
+            int index)
+        {
+            pattern.Value($@"\{index + 1}");
+
+            return pattern;
+        }
+
+        public static RegExpPattern GroupValue(
+            this RegExpPattern pattern,
+            string name)
+        {
+            pattern.Value($@"\k<{name}>");
 
             return pattern;
         }

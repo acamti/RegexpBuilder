@@ -10,7 +10,7 @@ namespace Acamti.RegexpBuilder.Rules
 
             var ruleToAdd = ruleToExtract.ToString().Length == 1
                 ? RegExpPattern.With().Value(ruleToExtract.ToString())
-                : RegExpPattern.With().Grouped(p => p.Value(ruleToExtract.ToString()));
+                : RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()));
 
             pattern.Value($"{ruleToAdd}*");
 
@@ -23,7 +23,7 @@ namespace Acamti.RegexpBuilder.Rules
 
             var ruleToAdd = ruleToExtract.ToString().Length == 1
                 ? RegExpPattern.With().Value(ruleToExtract.ToString())
-                : RegExpPattern.With().Grouped(p => p.Value(ruleToExtract.ToString()));
+                : RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()));
 
             pattern.Value($"{ruleToAdd}+");
 
@@ -36,7 +36,7 @@ namespace Acamti.RegexpBuilder.Rules
 
             var ruleToAdd = ruleToExtract.ToString().Length == 1
                 ? RegExpPattern.With().Value(ruleToExtract.ToString())
-                : RegExpPattern.With().Grouped(p => p.Value(ruleToExtract.ToString()));
+                : RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()));
 
             pattern.Value($"{ruleToAdd}?");
 

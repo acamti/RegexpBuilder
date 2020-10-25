@@ -29,7 +29,7 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_More_Text_Pattern()
         {
-            const string EXPECTED = "(dog)*s";
+            const string EXPECTED = "(?:dog)*s";
 
             var trueMatchInputs = new List<string>(new[] { "s", "dogs", "dogdogs" });
             var falseMatchInputs = new List<string>(new[] { "dog" });
@@ -65,7 +65,7 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_One_Or_More_Test_Pattern()
         {
-            const string EXPECTED = "(cat)+s";
+            const string EXPECTED = "(?:cat)+s";
 
             var trueMatchInputs = new List<string>(new[] { "cats", "catcats", "catss" });
             var falseMatchInputs = new List<string>(new[] { "cat", "s" });
@@ -101,7 +101,7 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_One_Text_Pattern()
         {
-            const string EXPECTED = "(duck)?s";
+            const string EXPECTED = "(?:duck)?s";
 
             var trueMatchInputs = new List<string>(new[] { "s", "ducks", "duckducks", "duckss" });
             var falseMatchInputs = new List<string>(new[] { "duck" });

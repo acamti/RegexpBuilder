@@ -28,13 +28,40 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern Grouped(
+        public static RegExpPattern Group(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToGroup = rule.Invoke(RegExpPattern.With());
 
+            pattern.Value($"(?:{ruleToGroup})");
+
+            return pattern;
+        }
+
+        public static RegExpPattern Group(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            bool capture)
+        {
+            if ( !capture )
+                return pattern.Group(rule);
+
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
             pattern.Value($"({ruleToGroup})");
+
+            return pattern;
+        }
+
+        public static RegExpPattern Group(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            string name)
+        {
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"(?<{name}>{ruleToGroup})");
 
             return pattern;
         }

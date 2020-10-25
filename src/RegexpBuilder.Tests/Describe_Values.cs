@@ -42,11 +42,11 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Repeat_Pattern()
         {
-            const string EXPECTED = "^(6?6?6?)";
+            const string EXPECTED = "^(?:6?6?6?)";
 
             var pattern = RegExpPattern
                 .StartWith()
-                .Grouped(
+                .Group(
                     p => p.Repeat(
                         r => r.ZeroOrOne(p2 => p2.Value("6")),
                         3
