@@ -47,5 +47,41 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_Range_Pattern()
+        {
+            const string EXPECTED = "[A-Z]";
+
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRange('A', 'Z');
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Range_With_Exception_Pattern()
+        {
+            const string EXPECTED = "[A-Z-[N]]";
+
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRangeWithException('A', 'Z', 'N');
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Range_With_Range_Exception_Pattern()
+        {
+            const string EXPECTED = "[A-Z-[M-P]]";
+
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRangeWithException('A', 'Z', 'M', 'P');
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
     }
 }

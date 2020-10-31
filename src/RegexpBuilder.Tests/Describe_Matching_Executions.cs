@@ -218,5 +218,61 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.IsMatch("queen").Should().BeFalse();
             pattern.IsMatch("quiet").Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Test_IsMatch_17()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRange('A', 'Z');
+
+            pattern.IsMatch("A").Should().BeTrue();
+            pattern.IsMatch("B").Should().BeTrue();
+            pattern.IsMatch("Z").Should().BeTrue();
+            pattern.IsMatch("AA").Should().BeTrue();
+
+            pattern.IsMatch("").Should().BeFalse();
+            pattern.IsMatch("a").Should().BeFalse();
+            pattern.IsMatch("z").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_18()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRangeWithException('A', 'Z', 'N');
+
+            pattern.IsMatch("A").Should().BeTrue();
+            pattern.IsMatch("B").Should().BeTrue();
+            pattern.IsMatch("Z").Should().BeTrue();
+            pattern.IsMatch("AA").Should().BeTrue();
+
+            pattern.IsMatch("").Should().BeFalse();
+            pattern.IsMatch("a").Should().BeFalse();
+            pattern.IsMatch("N").Should().BeFalse();
+            pattern.IsMatch("z").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_19()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .CharacterRangeWithException('A', 'Z', 'M', 'P');
+
+            pattern.IsMatch("A").Should().BeTrue();
+            pattern.IsMatch("B").Should().BeTrue();
+            pattern.IsMatch("Z").Should().BeTrue();
+            pattern.IsMatch("AA").Should().BeTrue();
+
+            pattern.IsMatch("").Should().BeFalse();
+            pattern.IsMatch("a").Should().BeFalse();
+            pattern.IsMatch("M").Should().BeFalse();
+            pattern.IsMatch("N").Should().BeFalse();
+            pattern.IsMatch("O").Should().BeFalse();
+            pattern.IsMatch("P").Should().BeFalse();
+            pattern.IsMatch("z").Should().BeFalse();
+        }
     }
 }

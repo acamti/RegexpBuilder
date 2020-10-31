@@ -65,5 +65,38 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern CharacterRange(
+            this RegExpPattern pattern,
+            char from,
+            char to)
+        {
+            pattern.Value($"[{from}-{to}]");
+
+            return pattern;
+        }
+
+        public static RegExpPattern CharacterRangeWithException(
+            this RegExpPattern pattern,
+            char from,
+            char to,
+            char exception)
+        {
+            pattern.Value($"[{from}-{to}-[{exception}]]");
+
+            return pattern;
+        }
+
+        public static RegExpPattern CharacterRangeWithException(
+            this RegExpPattern pattern,
+            char from,
+            char to,
+            char exceptionFrom,
+            char exceptionTo)
+        {
+            pattern.Value($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]");
+
+            return pattern;
+        }
     }
 }
