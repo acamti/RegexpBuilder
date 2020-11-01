@@ -16,7 +16,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithZeroOrMore(p => p.WithValue("a"))
                 .WithValue("b");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithZeroOrMore(p => p.WithValue("dog"))
                 .WithValue("s");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithOneOrMore(p => p.WithValue("a"))
                 .WithValue("b");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithOneOrMore(p => p.WithValue("cat"))
                 .WithValue("s");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithZeroOrOne(p => p.WithValue("a"))
                 .WithValue("b");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithZeroOrOne(p => p.WithValue("duck"))
                 .WithValue("s");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }

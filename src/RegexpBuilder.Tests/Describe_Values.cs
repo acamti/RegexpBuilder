@@ -15,7 +15,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithValue("winter");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithValue("1");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Acamti.RegexpBuilder.Tests
                     )
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithCharacterRange('A', 'Z');
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithCharacterRangeWithException('A', 'Z', 'N');
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithCharacterRangeWithException('A', 'Z', 'M', 'P');
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .OnlyIfAheadIs(p => p.WithValue("b"), p => p.WithValue("a"));
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .OnlyIfAheadIsNot(p => p.WithValue("b"), p => p.WithValue("a"));
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .OnlyIfBehindIs(p => p.WithValue("c"), p => p.WithValue("a"));
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .OnlyIfBehindIsNot(p => p.WithValue("c"), p => p.WithValue("a"));
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }

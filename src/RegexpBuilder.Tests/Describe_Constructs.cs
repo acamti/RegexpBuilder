@@ -18,7 +18,7 @@ namespace Acamti.RegexpBuilder.Tests
                     i => i.WithValue("her")
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace Acamti.RegexpBuilder.Tests
                     p => p.WithValue("her")
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
                 .WithValue("F");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithGroupValue(0)
                 .WithValue("F");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithGroupValue("One")
                 .WithValue("F");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithHardBegin()
                 .WithValue("start");
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -29,7 +29,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithValue("end")
                 .WithHardStop();
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Acamti.RegexpBuilder.Tests
                         .WithZeroOrMore(p2 => p2.WithAnyOneWordCharacter())
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace Acamti.RegexpBuilder.Tests
                     false
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Acamti.RegexpBuilder.Tests
                     false
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -102,13 +102,13 @@ namespace Acamti.RegexpBuilder.Tests
                         .WithValue("game")
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
         public void Test_Non_Word_Boundary_At_Beginning_Pattern()
         {
-            const string EXPECTED = @"\Bed";
+            const string EXPECTED = @"\bed";
 
             var pattern = new RegExpPattern()
                 .WithWord(
@@ -118,7 +118,7 @@ namespace Acamti.RegexpBuilder.Tests
                     false
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -133,7 +133,7 @@ namespace Acamti.RegexpBuilder.Tests
                     false
                 );
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }

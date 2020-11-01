@@ -1,4 +1,4 @@
-﻿using Acamti.RegexpBuilder.Rules;
+using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +16,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneWordCharacter();
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneNonWordCharacter();
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneWordOfCharacterType(wordType);
 
-            pattern.ToString().Should().BeEquivalentTo(expected);
+            pattern.ToString().Should().Be(expected);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneNonWordCharacter();
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneWordNotOfCharacterType(wordType);
 
-            pattern.ToString().Should().BeEquivalentTo(expected);
+            pattern.ToString().Should().Be(expected);
         }
 
         [TestMethod]
