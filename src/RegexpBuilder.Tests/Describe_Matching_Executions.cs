@@ -1,4 +1,5 @@
 ﻿using Acamti.RegexpBuilder.Rules;
+using Acamti.RegexpBuilder.Types;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -324,6 +325,36 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.IsMatch("b").Should().BeFalse();
             pattern.IsMatch("ca").Should().BeFalse();
             pattern.IsMatch("cab").Should().BeFalse();
+        }
+
+        [TestMethod]
+        [DataRow("a", "A", WordCharacter.WordCharacterType.LowerCase)]
+        public void Test_IsMatch_24(
+            string match,
+            string noMatch,
+            WordCharacter.WordCharacterType wordType)
+        {
+            var pattern = new RegExpPattern()
+                .WithAnyOneWordOfCharacterType(wordType);
+
+            pattern.IsMatch(match).Should().BeTrue();
+
+            pattern.IsMatch(noMatch).Should().BeFalse();
+        }
+
+        [TestMethod]
+        [DataRow("A", "a", WordCharacter.WordCharacterType.LowerCase)]
+        public void Test_IsMatch_25(
+            string match,
+            string noMatch,
+            WordCharacter.WordCharacterType wordType)
+        {
+            var pattern = new RegExpPattern()
+                .WithAnyOneWordNotOfCharacterType(wordType);
+
+            pattern.IsMatch(match).Should().BeTrue();
+
+            pattern.IsMatch(noMatch).Should().BeFalse();
         }
     }
 }
