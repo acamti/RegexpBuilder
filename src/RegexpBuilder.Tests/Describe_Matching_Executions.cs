@@ -274,5 +274,65 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.IsMatch("P").Should().BeFalse();
             pattern.IsMatch("z").Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Test_IsMatch_20()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfAheadIs(p => p.Value("b"), p => p.Value("a"));
+
+            pattern.IsMatch("ab").Should().BeTrue();
+            pattern.IsMatch("cab").Should().BeTrue();
+
+            pattern.IsMatch("a").Should().BeFalse();
+            pattern.IsMatch("b").Should().BeFalse();
+            pattern.IsMatch("ca").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_21()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfAheadIsNot(p => p.Value("b"), p => p.Value("a"));
+
+            pattern.IsMatch("a").Should().BeTrue();
+            pattern.IsMatch("ca").Should().BeTrue();
+
+            pattern.IsMatch("b").Should().BeFalse();
+            pattern.IsMatch("ab").Should().BeFalse();
+            pattern.IsMatch("cab").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_22()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfBehindIs(p => p.Value("c"), p => p.Value("a"));
+
+            pattern.IsMatch("ca").Should().BeTrue();
+            pattern.IsMatch("cab").Should().BeTrue();
+
+            pattern.IsMatch("a").Should().BeFalse();
+            pattern.IsMatch("b").Should().BeFalse();
+            pattern.IsMatch("ab").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_23()
+        {
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfBehindIsNot(p => p.Value("c"), p => p.Value("a"));
+
+            pattern.IsMatch("a").Should().BeTrue();
+            pattern.IsMatch("ab").Should().BeTrue();
+
+            pattern.IsMatch("b").Should().BeFalse();
+            pattern.IsMatch("ca").Should().BeFalse();
+            pattern.IsMatch("cab").Should().BeFalse();
+        }
     }
 }

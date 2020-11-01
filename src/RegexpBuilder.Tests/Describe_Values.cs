@@ -83,5 +83,53 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_LookAhead_Pattern()
+        {
+            const string EXPECTED = "a(?=b)";
+
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfAheadIs(p => p.Value("b"), p => p.Value("a"));
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Negative_LookAhead_Pattern()
+        {
+            const string EXPECTED = "a(?!b)";
+
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfAheadIsNot(p => p.Value("b"), p => p.Value("a"));
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_LookBehind_Pattern()
+        {
+            const string EXPECTED = "(?<=c)a";
+
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfBehindIs(p => p.Value("c"), p => p.Value("a"));
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Negative_LookBehind_Pattern()
+        {
+            const string EXPECTED = "(?<!c)a";
+
+            var pattern = RegExpPattern
+                .With()
+                .OnlyIfBehindIsNot(p => p.Value("c"), p => p.Value("a"));
+
+            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+        }
     }
 }

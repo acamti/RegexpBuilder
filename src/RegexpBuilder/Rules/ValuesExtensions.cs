@@ -98,5 +98,57 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern OnlyIfAheadIs(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> cond,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var condToGroup = cond.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"{ruleToGroup}(?={condToGroup})");
+
+            return pattern;
+        }
+
+        public static RegExpPattern OnlyIfAheadIsNot(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> cond,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var condToGroup = cond.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"{ruleToGroup}(?!{condToGroup})");
+
+            return pattern;
+        }
+
+        public static RegExpPattern OnlyIfBehindIs(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> cond,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var condToGroup = cond.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"(?<={condToGroup}){ruleToGroup}");
+
+            return pattern;
+        }
+
+        public static RegExpPattern OnlyIfBehindIsNot(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> cond,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var condToGroup = cond.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+
+            pattern.Value($"(?<!{condToGroup}){ruleToGroup}");
+
+            return pattern;
+        }
     }
 }
