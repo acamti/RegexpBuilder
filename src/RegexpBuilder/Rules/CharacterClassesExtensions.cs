@@ -42,5 +42,12 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern WithCharacter(this RegExpPattern pattern, char character)
+        {
+            pattern.WithValue($"\\u{char.ConvertToUtf32(character.ToString(), 0):X4}");
+
+            return pattern;
+        }
     }
 }

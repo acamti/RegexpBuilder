@@ -1,4 +1,4 @@
-using Acamti.RegexpBuilder.Rules;
+﻿using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -73,7 +73,18 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .WithAnyOneDigitCharacter();
 
-            pattern.ToString().Should().BeEquivalentTo(EXPECTED);
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Unicode_Character_Pattern()
+        {
+            const string EXPECTED = @"\u0064";
+
+            var pattern = new RegExpPattern()
+                .WithCharacter('d');
+
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }

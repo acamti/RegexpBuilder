@@ -356,5 +356,16 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.IsMatch(noMatch).Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Test_IsMatch_26()
+        {
+            var pattern = new RegExpPattern()
+                .WithCharacter('❎');
+
+            pattern.IsMatch("❎").Should().BeTrue();
+
+            pattern.IsMatch("Q").Should().BeFalse();
+        }
     }
 }
