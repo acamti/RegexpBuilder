@@ -12,9 +12,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\w";
 
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneWordCharacter();
+            var pattern = new RegExpPattern()
+                .WithAnyOneWordCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -24,9 +23,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\W";
 
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneNonWordCharacter();
+            var pattern = new RegExpPattern()
+                .WithAnyOneNonWordCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -36,9 +34,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\d";
 
-            var pattern = RegExpPattern
-                .With()
-                .AnyOneDigitCharacter();
+            var pattern = new RegExpPattern()
+                .WithAnyOneDigitCharacter();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }

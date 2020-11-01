@@ -13,9 +13,9 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "^start";
 
-            var pattern = RegExpPattern
-                .With(true)
-                .Value("start");
+            var pattern = new RegExpPattern()
+                .WithHardBegin()
+                .WithValue("start");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -25,10 +25,9 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "end$";
 
-            var pattern = RegExpPattern
-                .With()
-                .Value("end")
-                .Stop();
+            var pattern = new RegExpPattern()
+                .WithValue("end")
+                .WithHardStop();
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -37,11 +36,10 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_End_Is_Last_Rule_Anchors_Pattern()
         {
             Assert.ThrowsException<Exception>(
-                () => RegExpPattern
-                    .With()
-                    .Value("end")
-                    .Stop()
-                    .Value("not allowed")
+                () => new RegExpPattern()
+                    .WithValue("end")
+                    .WithHardStop()
+                    .WithValue("not allowed")
             );
         }
 
@@ -50,12 +48,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\bare\w*\b";
 
-            var pattern = RegExpPattern
-                .With()
-                .Word(
+            var pattern = new RegExpPattern()
+                .WithWord(
                     p => p
-                        .Value("are")
-                        .ZeroOrMore(p2 => p2.AnyOneWordCharacter())
+                        .WithValue("are")
+                        .WithZeroOrMore(p2 => p2.WithAnyOneWordCharacter())
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
@@ -66,12 +63,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\bword123";
 
-            var pattern = RegExpPattern
-                .With()
-                .Word(
+            var pattern = new RegExpPattern()
+                .WithWord(
                     p => p
-                        .Value("word")
-                        .Value("123"),
+                        .WithValue("word")
+                        .WithValue("123"),
                     true,
                     false
                 );
@@ -84,12 +80,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"word123\b";
 
-            var pattern = RegExpPattern
-                .With()
-                .Word(
+            var pattern = new RegExpPattern()
+                .WithWord(
                     p => p
-                        .Value("word")
-                        .Value("123"),
+                        .WithValue("word")
+                        .WithValue("123"),
                     false
                 );
 
@@ -101,11 +96,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\Bgame\B";
 
-            var pattern = RegExpPattern
-                .With()
-                .NonWord(
+            var pattern = new RegExpPattern()
+                .WithNonWord(
                     p => p
-                        .Value("game")
+                        .WithValue("game")
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
@@ -116,11 +110,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"\Bed";
 
-            var pattern = RegExpPattern
-                .With()
-                .Word(
+            var pattern = new RegExpPattern()
+                .WithWord(
                     p => p
-                        .Value("ed"),
+                        .WithValue("ed"),
                     true,
                     false
                 );
@@ -133,11 +126,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"Wo\b";
 
-            var pattern = RegExpPattern
-                .With()
-                .Word(
+            var pattern = new RegExpPattern()
+                .WithWord(
                     p => p
-                        .Value("Wo"),
+                        .WithValue("Wo"),
                     false
                 );
 

@@ -2,23 +2,23 @@
 {
     public static class CharacterClassesExtensions
     {
-        public static RegExpPattern AnyOneWordCharacter(this RegExpPattern pattern)
+        public static RegExpPattern WithAnyOneWordCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\w");
+            pattern.WithValue(@"\w");
 
             return pattern;
         }
 
-        public static RegExpPattern AnyOneNonWordCharacter(this RegExpPattern pattern)
+        public static RegExpPattern WithAnyOneNonWordCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\W");
+            pattern.WithValue(@"\W");
 
             return pattern;
         }
 
-        public static RegExpPattern AnyOneDigitCharacter(this RegExpPattern pattern)
+        public static RegExpPattern WithAnyOneDigitCharacter(this RegExpPattern pattern)
         {
-            pattern.Value(@"\d");
+            pattern.WithValue(@"\d");
 
             return pattern;
         }

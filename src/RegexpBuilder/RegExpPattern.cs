@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Acamti.RegexpBuilder.Rules;
 
 namespace Acamti.RegexpBuilder
 {
@@ -10,7 +9,7 @@ namespace Acamti.RegexpBuilder
         private readonly List<RegExpValue> _rules;
         private bool _isStopped;
 
-        private RegExpPattern() =>
+        public RegExpPattern() =>
             _rules = new List<RegExpValue>();
 
         internal void AddRule(RegExpValue rule)
@@ -21,12 +20,17 @@ namespace Acamti.RegexpBuilder
             _rules.Add(rule);
         }
 
-        public static RegExpPattern With(bool hardBegin = false) =>
-            hardBegin
-                ? new RegExpPattern().Value("^")
-                : new RegExpPattern();
+        public RegExpPattern WithHardBegin()
+        {
+            if ( _rules.Any() )
+                throw new Exception("Must not have rule defined before");
 
-        public RegExpPattern Stop()
+            _rules.Add(new RegExpValue("^"));
+
+            return this;
+        }
+
+        public RegExpPattern WithHardStop()
         {
             _rules.Add(new RegExpValue("$"));
 

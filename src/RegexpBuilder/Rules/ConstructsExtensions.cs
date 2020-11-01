@@ -5,50 +5,50 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ConstructsExtensions
     {
-        public static RegExpPattern Either(
+        public static RegExpPattern WithEither(
             this RegExpPattern pattern,
             params Func<RegExpPattern, RegExpPattern>[] rules)
         {
             var ruleValues = rules.Select(
                 rule =>
-                    rule.Invoke(RegExpPattern.With()).ToString());
+                    rule.Invoke(new RegExpPattern()).ToString());
 
-            pattern.Value(
+            pattern.WithValue(
                 $"{string.Join('|', ruleValues)}"
             );
 
             return pattern;
         }
 
-        public static RegExpPattern ConditionallyRule(
+        public static RegExpPattern WithConditionalRule(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             Func<RegExpPattern, RegExpPattern> yes,
             Func<RegExpPattern, RegExpPattern> no)
         {
-            var condition = rule.Invoke(RegExpPattern.With());
-            var yesMatch = yes.Invoke(RegExpPattern.With());
-            var noMatch = no.Invoke(RegExpPattern.With());
+            var condition = rule.Invoke(new RegExpPattern());
+            var yesMatch = yes.Invoke(new RegExpPattern());
+            var noMatch = no.Invoke(new RegExpPattern());
 
-            pattern.Value($"(?({condition}){yesMatch}|{noMatch})");
+            pattern.WithValue($"(?({condition}){yesMatch}|{noMatch})");
 
             return pattern;
         }
 
-        public static RegExpPattern GroupValue(
+        public static RegExpPattern WithGroupValue(
             this RegExpPattern pattern,
             int index)
         {
-            pattern.Value($@"\{index + 1}");
+            pattern.WithValue($@"\{index + 1}");
 
             return pattern;
         }
 
-        public static RegExpPattern GroupValue(
+        public static RegExpPattern WithGroupValue(
             this RegExpPattern pattern,
             string name)
         {
-            pattern.Value($@"\k<{name}>");
+            pattern.WithValue($@"\k<{name}>");
 
             return pattern;
         }

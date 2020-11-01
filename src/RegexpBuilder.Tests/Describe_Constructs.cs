@@ -12,11 +12,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"him|her";
 
-            var pattern = RegExpPattern
-                .With()
-                .Either(
-                    i => i.Value("him"),
-                    i => i.Value("her")
+            var pattern = new RegExpPattern()
+                .WithEither(
+                    i => i.WithValue("him"),
+                    i => i.WithValue("her")
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
@@ -27,15 +26,14 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"(?(\wi\w)him|her)";
 
-            var pattern = RegExpPattern
-                .With()
-                .ConditionallyRule(
+            var pattern = new RegExpPattern()
+                .WithConditionalRule(
                     p => p
-                        .AnyOneWordCharacter()
-                        .Value("i")
-                        .AnyOneWordCharacter(),
-                    p => p.Value("him"),
-                    p => p.Value("her")
+                        .WithAnyOneWordCharacter()
+                        .WithValue("i")
+                        .WithAnyOneWordCharacter(),
+                    p => p.WithValue("him"),
+                    p => p.WithValue("her")
                 );
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
@@ -46,12 +44,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"(\d)X(\d)F";
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("X")
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("X")
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("F");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -61,12 +58,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"(\d)X\1F";
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("X")
-                .GroupValue(0)
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("X")
+                .WithGroupValue(0)
+                .WithValue("F");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -76,12 +72,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = @"(?<One>\d)x\k<One>F";
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), "One")
-                .Value("x")
-                .GroupValue("One")
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), "One")
+                .WithValue("x")
+                .WithGroupValue("One")
+                .WithValue("F");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }

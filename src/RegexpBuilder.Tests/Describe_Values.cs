@@ -12,9 +12,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "winter";
 
-            var pattern = RegExpPattern
-                .With()
-                .Value("winter");
+            var pattern = new RegExpPattern()
+                .WithValue("winter");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -24,9 +23,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "1";
 
-            var pattern = RegExpPattern
-                .With()
-                .Value("1");
+            var pattern = new RegExpPattern()
+                .WithValue("1");
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -36,11 +34,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "(?:6?6?6?)";
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(
+            var pattern = new RegExpPattern()
+                .WithGroup(
                     p => p.Repeat(
-                        r => r.ZeroOrOne(p2 => p2.Value("6")),
+                        r => r.WithZeroOrOne(p2 => p2.WithValue("6")),
                         3
                     )
                 );
@@ -53,9 +50,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "[A-Z]";
 
-            var pattern = RegExpPattern
-                .With()
-                .CharacterRange('A', 'Z');
+            var pattern = new RegExpPattern()
+                .WithCharacterRange('A', 'Z');
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -65,9 +61,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "[A-Z-[N]]";
 
-            var pattern = RegExpPattern
-                .With()
-                .CharacterRangeWithException('A', 'Z', 'N');
+            var pattern = new RegExpPattern()
+                .WithCharacterRangeWithException('A', 'Z', 'N');
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -77,9 +72,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "[A-Z-[M-P]]";
 
-            var pattern = RegExpPattern
-                .With()
-                .CharacterRangeWithException('A', 'Z', 'M', 'P');
+            var pattern = new RegExpPattern()
+                .WithCharacterRangeWithException('A', 'Z', 'M', 'P');
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -89,9 +83,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "a(?=b)";
 
-            var pattern = RegExpPattern
-                .With()
-                .OnlyIfAheadIs(p => p.Value("b"), p => p.Value("a"));
+            var pattern = new RegExpPattern()
+                .OnlyIfAheadIs(p => p.WithValue("b"), p => p.WithValue("a"));
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -101,9 +94,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "a(?!b)";
 
-            var pattern = RegExpPattern
-                .With()
-                .OnlyIfAheadIsNot(p => p.Value("b"), p => p.Value("a"));
+            var pattern = new RegExpPattern()
+                .OnlyIfAheadIsNot(p => p.WithValue("b"), p => p.WithValue("a"));
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -113,9 +105,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "(?<=c)a";
 
-            var pattern = RegExpPattern
-                .With()
-                .OnlyIfBehindIs(p => p.Value("c"), p => p.Value("a"));
+            var pattern = new RegExpPattern()
+                .OnlyIfBehindIs(p => p.WithValue("c"), p => p.WithValue("a"));
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }
@@ -125,9 +116,8 @@ namespace Acamti.RegexpBuilder.Tests
         {
             const string EXPECTED = "(?<!c)a";
 
-            var pattern = RegExpPattern
-                .With()
-                .OnlyIfBehindIsNot(p => p.Value("c"), p => p.Value("a"));
+            var pattern = new RegExpPattern()
+                .OnlyIfBehindIsNot(p => p.WithValue("c"), p => p.WithValue("a"));
 
             pattern.ToString().Should().BeEquivalentTo(EXPECTED);
         }

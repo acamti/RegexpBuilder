@@ -4,13 +4,13 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class AnchorsExtensions
     {
-        public static RegExpPattern Word(
+        public static RegExpPattern WithWord(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool beginningBoundary = true,
             bool endingBoundary = true)
         {
-            var ruleToExtract = rule.Invoke(RegExpPattern.With());
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             var beginningBoundaryRule = beginningBoundary
                 ? @"\b"
@@ -20,18 +20,18 @@ namespace Acamti.RegexpBuilder.Rules
                 ? @"\b"
                 : string.Empty;
 
-            pattern.Value($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
+            pattern.WithValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
 
             return pattern;
         }
 
-        public static RegExpPattern NonWord(
+        public static RegExpPattern WithNonWord(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool beginningBoundary = true,
             bool endingBoundary = true)
         {
-            var ruleToExtract = rule.Invoke(RegExpPattern.With());
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             var beginningBoundaryRule = beginningBoundary
                 ? @"\B"
@@ -41,7 +41,7 @@ namespace Acamti.RegexpBuilder.Rules
                 ? @"\B"
                 : string.Empty;
 
-            pattern.Value($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
+            pattern.WithValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
 
             return pattern;
         }

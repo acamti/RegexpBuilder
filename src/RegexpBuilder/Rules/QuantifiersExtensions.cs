@@ -17,41 +17,41 @@ namespace Acamti.RegexpBuilder.Rules
             }
         }
 
-        public static RegExpPattern ZeroOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithZeroOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {
-            var ruleToExtract = rule.Invoke(RegExpPattern.With());
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             var ruleToAdd = IsText(ruleToExtract)
-                ? RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()))
-                : RegExpPattern.With().Value(ruleToExtract.ToString());
+                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
+                : new RegExpPattern().WithValue(ruleToExtract.ToString());
 
-            pattern.Value($"{ruleToAdd}*");
+            pattern.WithValue($"{ruleToAdd}*");
 
             return pattern;
         }
 
-        public static RegExpPattern OneOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithOneOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {
-            var ruleToExtract = rule.Invoke(RegExpPattern.With());
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             var ruleToAdd = IsText(ruleToExtract)
-                ? RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()))
-                : RegExpPattern.With().Value(ruleToExtract.ToString());
+                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
+                : new RegExpPattern().WithValue(ruleToExtract.ToString());
 
-            pattern.Value($"{ruleToAdd}+");
+            pattern.WithValue($"{ruleToAdd}+");
 
             return pattern;
         }
 
-        public static RegExpPattern ZeroOrOne(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithZeroOrOne(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {
-            var ruleToExtract = rule.Invoke(RegExpPattern.With());
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             var ruleToAdd = IsText(ruleToExtract)
-                ? RegExpPattern.With().Group(p => p.Value(ruleToExtract.ToString()))
-                : RegExpPattern.With().Value(ruleToExtract.ToString());
+                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
+                : new RegExpPattern().WithValue(ruleToExtract.ToString());
 
-            pattern.Value($"{ruleToAdd}?");
+            pattern.WithValue($"{ruleToAdd}?");
 
             return pattern;
         }

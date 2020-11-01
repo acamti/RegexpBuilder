@@ -5,7 +5,7 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
-        public static RegExpPattern Value(this RegExpPattern pattern, string value)
+        public static RegExpPattern WithValue(this RegExpPattern pattern, string value)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
@@ -21,80 +21,80 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var rules = Enumerable
                 .Range(0, time)
-                .Select(_ => rule.Invoke(RegExpPattern.With()));
+                .Select(_ => rule.Invoke(new RegExpPattern()));
 
-            pattern.Value($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}");
+            pattern.WithValue($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}");
 
             return pattern;
         }
 
-        public static RegExpPattern Group(
+        public static RegExpPattern WithGroup(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule)
         {
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"(?:{ruleToGroup})");
+            pattern.WithValue($"(?:{ruleToGroup})");
 
             return pattern;
         }
 
-        public static RegExpPattern Group(
+        public static RegExpPattern WithGroup(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool capture)
         {
             if ( !capture )
-                return pattern.Group(rule);
+                return pattern.WithGroup(rule);
 
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"({ruleToGroup})");
+            pattern.WithValue($"({ruleToGroup})");
 
             return pattern;
         }
 
-        public static RegExpPattern Group(
+        public static RegExpPattern WithGroup(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             string name)
         {
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"(?<{name}>{ruleToGroup})");
+            pattern.WithValue($"(?<{name}>{ruleToGroup})");
 
             return pattern;
         }
 
-        public static RegExpPattern CharacterRange(
+        public static RegExpPattern WithCharacterRange(
             this RegExpPattern pattern,
             char from,
             char to)
         {
-            pattern.Value($"[{from}-{to}]");
+            pattern.WithValue($"[{from}-{to}]");
 
             return pattern;
         }
 
-        public static RegExpPattern CharacterRangeWithException(
+        public static RegExpPattern WithCharacterRangeWithException(
             this RegExpPattern pattern,
             char from,
             char to,
             char exception)
         {
-            pattern.Value($"[{from}-{to}-[{exception}]]");
+            pattern.WithValue($"[{from}-{to}-[{exception}]]");
 
             return pattern;
         }
 
-        public static RegExpPattern CharacterRangeWithException(
+        public static RegExpPattern WithCharacterRangeWithException(
             this RegExpPattern pattern,
             char from,
             char to,
             char exceptionFrom,
             char exceptionTo)
         {
-            pattern.Value($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]");
+            pattern.WithValue($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]");
 
             return pattern;
         }
@@ -104,10 +104,10 @@ namespace Acamti.RegexpBuilder.Rules
             Func<RegExpPattern, RegExpPattern> cond,
             Func<RegExpPattern, RegExpPattern> rule)
         {
-            var condToGroup = cond.Invoke(RegExpPattern.With());
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var condToGroup = cond.Invoke(new RegExpPattern());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"{ruleToGroup}(?={condToGroup})");
+            pattern.WithValue($"{ruleToGroup}(?={condToGroup})");
 
             return pattern;
         }
@@ -117,10 +117,10 @@ namespace Acamti.RegexpBuilder.Rules
             Func<RegExpPattern, RegExpPattern> cond,
             Func<RegExpPattern, RegExpPattern> rule)
         {
-            var condToGroup = cond.Invoke(RegExpPattern.With());
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var condToGroup = cond.Invoke(new RegExpPattern());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"{ruleToGroup}(?!{condToGroup})");
+            pattern.WithValue($"{ruleToGroup}(?!{condToGroup})");
 
             return pattern;
         }
@@ -130,10 +130,10 @@ namespace Acamti.RegexpBuilder.Rules
             Func<RegExpPattern, RegExpPattern> cond,
             Func<RegExpPattern, RegExpPattern> rule)
         {
-            var condToGroup = cond.Invoke(RegExpPattern.With());
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var condToGroup = cond.Invoke(new RegExpPattern());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"(?<={condToGroup}){ruleToGroup}");
+            pattern.WithValue($"(?<={condToGroup}){ruleToGroup}");
 
             return pattern;
         }
@@ -143,10 +143,10 @@ namespace Acamti.RegexpBuilder.Rules
             Func<RegExpPattern, RegExpPattern> cond,
             Func<RegExpPattern, RegExpPattern> rule)
         {
-            var condToGroup = cond.Invoke(RegExpPattern.With());
-            var ruleToGroup = rule.Invoke(RegExpPattern.With());
+            var condToGroup = cond.Invoke(new RegExpPattern());
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.Value($"(?<!{condToGroup}){ruleToGroup}");
+            pattern.WithValue($"(?<!{condToGroup}){ruleToGroup}");
 
             return pattern;
         }

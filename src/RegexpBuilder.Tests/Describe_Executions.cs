@@ -12,11 +12,10 @@ namespace Acamti.RegexpBuilder.Tests
         {
             var expected = new[] { "012", "6789" };
 
-            var pattern = RegExpPattern
-                .With()
-                .Value("-")
-                .Repeat(p => p.AnyOneDigitCharacter(), 3)
-                .Value("-");
+            var pattern = new RegExpPattern()
+                .WithValue("-")
+                .Repeat(p => p.WithAnyOneDigitCharacter(), 3)
+                .WithValue("-");
 
             pattern.Split("012-345-6789").Should().BeEquivalentTo(expected);
             pattern.Split("(555)-555-5555").Should().NotBeEquivalentTo(expected);
@@ -31,12 +30,11 @@ namespace Acamti.RegexpBuilder.Tests
                 ( 2, "2", "1" )
             };
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("X")
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("X")
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("F");
 
             pattern.Groups("0X1F").Should().BeEquivalentTo(expected);
         }
@@ -50,12 +48,11 @@ namespace Acamti.RegexpBuilder.Tests
                 ( 2, "Two", "1" )
             };
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), "One")
-                .Value("X")
-                .Group(p => p.AnyOneDigitCharacter(), "Two")
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), "One")
+                .WithValue("X")
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), "Two")
+                .WithValue("F");
 
             pattern.Groups("0X1F").Should().BeEquivalentTo(expected);
         }
@@ -68,12 +65,11 @@ namespace Acamti.RegexpBuilder.Tests
                 ( 0, "1", "0" )
             };
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), true)
-                .Value("X")
-                .GroupValue(0)
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithValue("X")
+                .WithGroupValue(0)
+                .WithValue("F");
 
             pattern.Groups("0X0F").Should().BeEquivalentTo(expected);
             pattern.Groups("0X1F").Should().NotBeEquivalentTo(expected);
@@ -87,12 +83,11 @@ namespace Acamti.RegexpBuilder.Tests
                 ( 0, "One", "0" )
             };
 
-            var pattern = RegExpPattern
-                .With()
-                .Group(p => p.AnyOneDigitCharacter(), "One")
-                .Value("X")
-                .GroupValue("One")
-                .Value("F");
+            var pattern = new RegExpPattern()
+                .WithGroup(p => p.WithAnyOneDigitCharacter(), "One")
+                .WithValue("X")
+                .WithGroupValue("One")
+                .WithValue("F");
 
             pattern.Groups("0X0F").Should().BeEquivalentTo(expected);
             pattern.Groups("0X1F").Should().NotBeEquivalentTo(expected);
