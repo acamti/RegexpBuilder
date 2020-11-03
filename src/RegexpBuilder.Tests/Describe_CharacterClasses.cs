@@ -86,5 +86,24 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        [DataRow(CharacterClass.CharacterClassType.Bell, "0007")]
+        [DataRow(CharacterClass.CharacterClassType.BackSpace, "0008")]
+        [DataRow(CharacterClass.CharacterClassType.Tab, "0009")]
+        [DataRow(CharacterClass.CharacterClassType.CarriageReturn, "000D")]
+        [DataRow(CharacterClass.CharacterClassType.VerticalTab, "000B")]
+        [DataRow(CharacterClass.CharacterClassType.FormFeed, "000C")]
+        [DataRow(CharacterClass.CharacterClassType.NewLine, "000A")]
+        [DataRow(CharacterClass.CharacterClassType.Escape, "001B")]
+        public void Test_Escaped_Character_Pattern(CharacterClass.CharacterClassType type, string value)
+        {
+            var expected = @"\u" + value;
+
+            var pattern = new RegExpPattern()
+                .WithCharacter(type);
+
+            pattern.ToString().Should().Be(expected);
+        }
     }
 }

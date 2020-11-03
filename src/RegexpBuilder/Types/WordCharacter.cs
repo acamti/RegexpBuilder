@@ -2,13 +2,13 @@
 
 namespace Acamti.RegexpBuilder.Types
 {
-    public class WordCharacter
+    public static class WordCharacter
     {
         public enum WordCharacterType
         {
             LowerCase
         }
-        
+
         public static string GetValue(WordCharacterType type)
         {
             return type switch
@@ -17,8 +17,5 @@ namespace Acamti.RegexpBuilder.Types
                 _                           => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
-        
     }
-    
-    
 }

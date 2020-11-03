@@ -49,5 +49,14 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern WithCharacter(
+            this RegExpPattern pattern,
+            CharacterClass.CharacterClassType character)
+        {
+            pattern.WithValue($"\\u{CharacterClass.GetValue(character)}");
+
+            return pattern;
+        }
     }
 }
