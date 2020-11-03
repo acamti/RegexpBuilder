@@ -6,7 +6,7 @@ namespace Acamti.RegexpBuilder.Rules
     {
         public static RegExpPattern WithAnyOneWordCharacter(this RegExpPattern pattern)
         {
-            pattern.WithValue(@"\w");
+            pattern.AddRule(new RegExpValue(@"\w"));
 
             return pattern;
         }
@@ -15,14 +15,14 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             WordCharacter.WordCharacterType wordCharType)
         {
-            pattern.WithValue(@"\p{" + $"{WordCharacter.GetValue(wordCharType)}" + "}");
+            pattern.AddRule(new RegExpValue(@"\p{" + $"{WordCharacter.GetValue(wordCharType)}" + "}"));
 
             return pattern;
         }
 
         public static RegExpPattern WithAnyOneNonWordCharacter(this RegExpPattern pattern)
         {
-            pattern.WithValue(@"\W");
+            pattern.AddRule(new RegExpValue(@"\W"));
 
             return pattern;
         }
@@ -31,21 +31,21 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             WordCharacter.WordCharacterType wordCharType)
         {
-            pattern.WithValue(@"\P{" + $"{WordCharacter.GetValue(wordCharType)}" + "}");
+            pattern.AddRule(new RegExpValue(@"\P{" + $"{WordCharacter.GetValue(wordCharType)}" + "}"));
 
             return pattern;
         }
 
         public static RegExpPattern WithAnyOneDigitCharacter(this RegExpPattern pattern)
         {
-            pattern.WithValue(@"\d");
+            pattern.AddRule(new RegExpValue(@"\d"));
 
             return pattern;
         }
 
         public static RegExpPattern WithCharacter(this RegExpPattern pattern, char character)
         {
-            pattern.WithValue($"\\u{char.ConvertToUtf32(character.ToString(), 0):X4}");
+            pattern.AddRule(new RegExpValue($"\\u{char.ConvertToUtf32(character.ToString(), 0):X4}"));
 
             return pattern;
         }
@@ -54,7 +54,7 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             CharacterClass.CharacterClassType character)
         {
-            pattern.WithValue($"\\u{CharacterClass.GetValue(character)}");
+            pattern.AddRule(new RegExpValue($"\\u{CharacterClass.GetValue(character)}"));
 
             return pattern;
         }

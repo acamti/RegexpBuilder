@@ -20,7 +20,7 @@ namespace Acamti.RegexpBuilder.Rules
                 ? @"\b"
                 : string.Empty;
 
-            pattern.WithValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
+            pattern.AddRule(new RegExpValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}"));
 
             return pattern;
         }
@@ -41,7 +41,7 @@ namespace Acamti.RegexpBuilder.Rules
                 ? @"\B"
                 : string.Empty;
 
-            pattern.WithValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}");
+            pattern.AddRule(new RegExpValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}"));
 
             return pattern;
         }

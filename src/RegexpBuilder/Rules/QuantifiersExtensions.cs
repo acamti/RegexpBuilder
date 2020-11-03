@@ -21,11 +21,24 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            var ruleToAdd = IsText(ruleToExtract)
-                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
-                : new RegExpPattern().WithValue(ruleToExtract.ToString());
+            if ( IsText(ruleToExtract) )
+            {
+                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                {
+                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-            pattern.WithValue($"{ruleToAdd}*");
+                    return p;
+                });
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}*"));
+            }
+            else
+            {
+                var ruleToAdd = new RegExpPattern();
+                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}*"));
+            }
 
             return pattern;
         }
@@ -34,11 +47,24 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            var ruleToAdd = IsText(ruleToExtract)
-                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
-                : new RegExpPattern().WithValue(ruleToExtract.ToString());
+            if ( IsText(ruleToExtract) )
+            {
+                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                {
+                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-            pattern.WithValue($"{ruleToAdd}+");
+                    return p;
+                });
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}+"));
+            }
+            else
+            {
+                var ruleToAdd = new RegExpPattern();
+                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}+"));
+            }
 
             return pattern;
         }
@@ -47,11 +73,24 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            var ruleToAdd = IsText(ruleToExtract)
-                ? new RegExpPattern().WithGroup(p => p.WithValue(ruleToExtract.ToString()))
-                : new RegExpPattern().WithValue(ruleToExtract.ToString());
+            if ( IsText(ruleToExtract) )
+            {
+                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                {
+                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-            pattern.WithValue($"{ruleToAdd}?");
+                    return p;
+                });
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}?"));
+            }
+            else
+            {
+                var ruleToAdd = new RegExpPattern();
+                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
+
+                pattern.AddRule(new RegExpValue($"{ruleToAdd}?"));
+            }
 
             return pattern;
         }

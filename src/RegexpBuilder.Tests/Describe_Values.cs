@@ -121,5 +121,28 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        [DataRow(".")]
+        [DataRow("$")]
+        [DataRow("^")]
+        [DataRow("{")]
+        [DataRow("[")]
+        [DataRow("(")]
+        [DataRow("|")]
+        [DataRow(")")]
+        [DataRow("*")]
+        [DataRow("+")]
+        [DataRow("?")]
+        [DataRow("\\")]
+        public void Test_Escaped_Special_Character_Pattern(string special)
+        {
+            var expected = @"\" + special;
+
+            var pattern = new RegExpPattern()
+                .WithValue(special);
+
+            pattern.ToString().Should().Be(expected);
+        }
     }
 }

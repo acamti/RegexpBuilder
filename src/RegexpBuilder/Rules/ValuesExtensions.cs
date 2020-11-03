@@ -5,11 +5,26 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
+        private static string Escape(string value)
+        {
+            var mustEscape = new[] { ".", "$", "^", "{", "[", "(", "|", ")", "*", "+", "?", "\\" };
+
+            return value.Aggregate(
+                string.Empty,
+                (seed, c) =>
+                {
+                    if ( mustEscape.Contains(c.ToString()) )
+                        return seed + "\\" + c;
+
+                    return seed + c;
+                });
+        }
+
         public static RegExpPattern WithValue(this RegExpPattern pattern, string value)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
-            pattern.AddRule(new RegExpValue(value));
+            pattern.AddRule(new RegExpValue(Escape(value)));
 
             return pattern;
         }
@@ -23,7 +38,7 @@ namespace Acamti.RegexpBuilder.Rules
                 .Range(0, time)
                 .Select(_ => rule.Invoke(new RegExpPattern()));
 
-            pattern.WithValue($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}");
+            pattern.AddRule(new RegExpValue($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}"));
 
             return pattern;
         }
@@ -34,7 +49,7 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"(?:{ruleToGroup})");
+            pattern.AddRule(new RegExpValue($"(?:{ruleToGroup})"));
 
             return pattern;
         }
@@ -49,7 +64,7 @@ namespace Acamti.RegexpBuilder.Rules
 
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"({ruleToGroup})");
+            pattern.AddRule(new RegExpValue($"({ruleToGroup})"));
 
             return pattern;
         }
@@ -61,7 +76,7 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"(?<{name}>{ruleToGroup})");
+            pattern.AddRule(new RegExpValue($"(?<{name}>{ruleToGroup})"));
 
             return pattern;
         }
@@ -71,7 +86,7 @@ namespace Acamti.RegexpBuilder.Rules
             char from,
             char to)
         {
-            pattern.WithValue($"[{from}-{to}]");
+            pattern.AddRule(new RegExpValue($"[{from}-{to}]"));
 
             return pattern;
         }
@@ -82,7 +97,7 @@ namespace Acamti.RegexpBuilder.Rules
             char to,
             char exception)
         {
-            pattern.WithValue($"[{from}-{to}-[{exception}]]");
+            pattern.AddRule(new RegExpValue($"[{from}-{to}-[{exception}]]"));
 
             return pattern;
         }
@@ -94,7 +109,7 @@ namespace Acamti.RegexpBuilder.Rules
             char exceptionFrom,
             char exceptionTo)
         {
-            pattern.WithValue($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]");
+            pattern.AddRule(new RegExpValue($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]"));
 
             return pattern;
         }
@@ -107,7 +122,7 @@ namespace Acamti.RegexpBuilder.Rules
             var condToGroup = cond.Invoke(new RegExpPattern());
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"{ruleToGroup}(?={condToGroup})");
+            pattern.AddRule(new RegExpValue($"{ruleToGroup}(?={condToGroup})"));
 
             return pattern;
         }
@@ -120,7 +135,7 @@ namespace Acamti.RegexpBuilder.Rules
             var condToGroup = cond.Invoke(new RegExpPattern());
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"{ruleToGroup}(?!{condToGroup})");
+            pattern.AddRule(new RegExpValue($"{ruleToGroup}(?!{condToGroup})"));
 
             return pattern;
         }
@@ -133,7 +148,7 @@ namespace Acamti.RegexpBuilder.Rules
             var condToGroup = cond.Invoke(new RegExpPattern());
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"(?<={condToGroup}){ruleToGroup}");
+            pattern.AddRule(new RegExpValue($"(?<={condToGroup}){ruleToGroup}"));
 
             return pattern;
         }
@@ -146,7 +161,7 @@ namespace Acamti.RegexpBuilder.Rules
             var condToGroup = cond.Invoke(new RegExpPattern());
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"(?<!{condToGroup}){ruleToGroup}");
+            pattern.AddRule(new RegExpValue($"(?<!{condToGroup}){ruleToGroup}"));
 
             return pattern;
         }

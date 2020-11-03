@@ -13,9 +13,9 @@ namespace Acamti.RegexpBuilder.Rules
                 rule =>
                     rule.Invoke(new RegExpPattern()).ToString());
 
-            pattern.WithValue(
-                $"{string.Join('|', ruleValues)}"
-            );
+            pattern.AddRule(new RegExpValue(
+                                $"{string.Join('|', ruleValues)}"
+                            ));
 
             return pattern;
         }
@@ -30,7 +30,7 @@ namespace Acamti.RegexpBuilder.Rules
             var yesMatch = yes.Invoke(new RegExpPattern());
             var noMatch = no.Invoke(new RegExpPattern());
 
-            pattern.WithValue($"(?({condition}){yesMatch}|{noMatch})");
+            pattern.AddRule(new RegExpValue($"(?({condition}){yesMatch}|{noMatch})"));
 
             return pattern;
         }
@@ -39,7 +39,7 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             int index)
         {
-            pattern.WithValue($@"\{index + 1}");
+            pattern.AddRule(new RegExpValue($@"\{index + 1}"));
 
             return pattern;
         }
@@ -48,7 +48,7 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             string name)
         {
-            pattern.WithValue($@"\k<{name}>");
+            pattern.AddRule(new RegExpValue($@"\k<{name}>"));
 
             return pattern;
         }
