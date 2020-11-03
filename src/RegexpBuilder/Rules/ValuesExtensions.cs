@@ -5,26 +5,11 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
-        private static string Escape(string value)
-        {
-            var mustEscape = new[] { ".", "$", "^", "{", "[", "(", "|", ")", "*", "+", "?", "\\" };
-
-            return value.Aggregate(
-                string.Empty,
-                (seed, c) =>
-                {
-                    if ( mustEscape.Contains(c.ToString()) )
-                        return seed + "\\" + c;
-
-                    return seed + c;
-                });
-        }
-
         public static RegExpPattern WithValue(this RegExpPattern pattern, string value)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
-            pattern.AddRule(new RegExpValue(Escape(value)));
+            pattern.AddRule(new RegExpValue(Tools.Escape(value)));
 
             return pattern;
         }
@@ -38,7 +23,10 @@ namespace Acamti.RegexpBuilder.Rules
                 .Range(0, time)
                 .Select(_ => rule.Invoke(new RegExpPattern()));
 
-            pattern.AddRule(new RegExpValue($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}"));
+            pattern.AddRule(
+                new RegExpValue(
+                    $"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}")
+            );
 
             return pattern;
         }
@@ -77,39 +65,6 @@ namespace Acamti.RegexpBuilder.Rules
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
             pattern.AddRule(new RegExpValue($"(?<{name}>{ruleToGroup})"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithCharacterRange(
-            this RegExpPattern pattern,
-            char from,
-            char to)
-        {
-            pattern.AddRule(new RegExpValue($"[{from}-{to}]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithCharacterRangeWithException(
-            this RegExpPattern pattern,
-            char from,
-            char to,
-            char exception)
-        {
-            pattern.AddRule(new RegExpValue($"[{from}-{to}-[{exception}]]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithCharacterRangeWithException(
-            this RegExpPattern pattern,
-            char from,
-            char to,
-            char exceptionFrom,
-            char exceptionTo)
-        {
-            pattern.AddRule(new RegExpValue($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]"));
 
             return pattern;
         }

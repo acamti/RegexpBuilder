@@ -367,5 +367,27 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.IsMatch("Q").Should().BeFalse();
         }
+
+        [TestMethod]
+        public void Test_IsMatch_27()
+        {
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfTheseCharacters("ae");
+
+            pattern.IsMatch("gray").Should().BeTrue();
+
+            pattern.IsMatch("guy").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_28()
+        {
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfNotTheseCharacters("aei");
+
+            pattern.IsMatch("reign").Should().BeTrue();
+
+            pattern.IsMatch("aei").Should().BeFalse();
+        }
     }
 }
