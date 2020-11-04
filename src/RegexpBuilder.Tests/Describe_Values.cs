@@ -13,7 +13,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "winter";
 
             var pattern = new RegExpPattern()
-                .WithValue("winter");
+                .Text("winter");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -24,7 +24,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "1";
 
             var pattern = new RegExpPattern()
-                .WithValue("1");
+                .Text("1");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -35,9 +35,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:6?6?6?)";
 
             var pattern = new RegExpPattern()
-                .WithGroupOf(
+                .GroupOf(
                     p => p.Repeat(
-                        r => r.WithZeroOrOneOf(p2 => p2.WithValue("6")),
+                        r => r.ZeroOrOneOf(p2 => p2.Text("6")),
                         3
                     )
                 );
@@ -51,7 +51,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a(?=b)";
 
             var pattern = new RegExpPattern()
-                .OnlyIfAheadIs(p => p.WithValue("b"), p => p.WithValue("a"));
+                .OnlyIfAheadIs(p => p.Text("b"), p => p.Text("a"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -62,7 +62,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a(?!b)";
 
             var pattern = new RegExpPattern()
-                .OnlyIfAheadIsNot(p => p.WithValue("b"), p => p.WithValue("a"));
+                .OnlyIfAheadIsNot(p => p.Text("b"), p => p.Text("a"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -73,7 +73,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?<=c)a";
 
             var pattern = new RegExpPattern()
-                .OnlyIfBehindIs(p => p.WithValue("c"), p => p.WithValue("a"));
+                .OnlyIfBehindIs(p => p.Text("c"), p => p.Text("a"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -84,7 +84,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?<!c)a";
 
             var pattern = new RegExpPattern()
-                .OnlyIfBehindIsNot(p => p.WithValue("c"), p => p.WithValue("a"));
+                .OnlyIfBehindIsNot(p => p.Text("c"), p => p.Text("a"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -107,7 +107,7 @@ namespace Acamti.RegexpBuilder.Tests
             var expected = @"\" + special;
 
             var pattern = new RegExpPattern()
-                .WithValue(special);
+                .Text(special);
 
             pattern.ToString().Should().Be(expected);
         }

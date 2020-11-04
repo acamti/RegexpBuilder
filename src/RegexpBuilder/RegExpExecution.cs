@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Acamti.RegexpBuilder
@@ -24,19 +23,5 @@ namespace Acamti.RegexpBuilder
             this RegExpPattern pattern,
             string input) =>
             new Regex(pattern.ToString()).Matches(input);
-
-        public static IEnumerable<(int index, string name, string value)> Groups(
-            this RegExpPattern pattern,
-            string input)
-        {
-            var regExp = new Regex(pattern.ToString());
-
-            return regExp
-                .Match(input)
-                .Groups
-                .Values
-                .Where((_, y) => y > 0)
-                .Select(g => ( g.Index, g.Name, g.Value ));
-        }
     }
 }

@@ -13,8 +13,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a*b";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrMoreOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .ZeroOrMoreOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -25,8 +25,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:dog)*s";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrMoreOf(p => p.WithValue("dog"))
-                .WithValue("s");
+                .ZeroOrMoreOf(p => p.Text("dog"))
+                .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -37,8 +37,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a+b";
 
             var pattern = new RegExpPattern()
-                .WithOneOrMoreOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .OneOrMoreOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -49,8 +49,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:cat)+s";
 
             var pattern = new RegExpPattern()
-                .WithOneOrMoreOf(p => p.WithValue("cat"))
-                .WithValue("s");
+                .OneOrMoreOf(p => p.Text("cat"))
+                .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -61,8 +61,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a?b";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrOneOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .ZeroOrOneOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -73,8 +73,80 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:duck)?s";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrOneOf(p => p.WithValue("duck"))
-                .WithValue("s");
+                .ZeroOrOneOf(p => p.Text("duck"))
+                .Text("s");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_More_As_Few_As_Possible_Character_Pattern()
+        {
+            const string EXPECTED = "a*?b";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrMoreOf(p => p.Text("a"), true)
+                .Text("b");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_More_As_Few_As_Possible_Text_Pattern()
+        {
+            const string EXPECTED = "(?:dog)*?s";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrMoreOf(p => p.Text("dog"), true)
+                .Text("s");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_One_Or_More_As_Few_As_Possible_Character_Pattern()
+        {
+            const string EXPECTED = "a+?b";
+
+            var pattern = new RegExpPattern()
+                .OneOrMoreOf(p => p.Text("a"), true)
+                .Text("b");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_One_Or_More_As_Few_As_Possible_Test_Pattern()
+        {
+            const string EXPECTED = "(?:cat)+?s";
+
+            var pattern = new RegExpPattern()
+                .OneOrMoreOf(p => p.Text("cat"), true)
+                .Text("s");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_One_As_Few_As_Possible_Character_Pattern()
+        {
+            const string EXPECTED = "a??b";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrOneOf(p => p.Text("a"), true)
+                .Text("b");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_One_As_Few_As_Possible_Text_Pattern()
+        {
+            const string EXPECTED = "(?:duck)??s";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrOneOf(p => p.Text("duck"), true)
+                .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
         }

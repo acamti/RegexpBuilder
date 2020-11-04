@@ -13,7 +13,9 @@ namespace Acamti.RegexpBuilder.Types
             VerticalTab,
             FormFeed,
             NewLine,
-            Escape
+            Escape,
+            WhiteSpace,
+            NonWhiteSpace
         }
 
         public static string GetValue(EscapeCharacterType type)
@@ -28,6 +30,8 @@ namespace Acamti.RegexpBuilder.Types
                 EscapeCharacterType.FormFeed       => "\\f",
                 EscapeCharacterType.NewLine        => "\\n",
                 EscapeCharacterType.Escape         => "\\e",
+                EscapeCharacterType.WhiteSpace     => "\\s",
+                EscapeCharacterType.NonWhiteSpace  => "\\S",
                 _                                  => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }

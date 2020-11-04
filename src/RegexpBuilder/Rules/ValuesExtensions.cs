@@ -6,7 +6,7 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
-        public static RegExpPattern WithValue(this RegExpPattern pattern, string value)
+        public static RegExpPattern Text(this RegExpPattern pattern, string value)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
@@ -34,44 +34,6 @@ namespace Acamti.RegexpBuilder.Rules
                 new RegExpValue(
                     $"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}")
             );
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithGroupOf(
-            this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule)
-        {
-            var ruleToGroup = rule.Invoke(new RegExpPattern());
-
-            pattern.AddRule(new RegExpValue($"(?:{ruleToGroup})"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithGroupOf(
-            this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            bool capture)
-        {
-            if ( !capture )
-                return pattern.WithGroupOf(rule);
-
-            var ruleToGroup = rule.Invoke(new RegExpPattern());
-
-            pattern.AddRule(new RegExpValue($"({ruleToGroup})"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithGroupOf(
-            this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            string name)
-        {
-            var ruleToGroup = rule.Invoke(new RegExpPattern());
-
-            pattern.AddRule(new RegExpValue($"(?<{name}>{ruleToGroup})"));
 
             return pattern;
         }

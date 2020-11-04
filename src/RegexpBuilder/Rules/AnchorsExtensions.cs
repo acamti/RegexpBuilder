@@ -4,7 +4,7 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class AnchorsExtensions
     {
-        public static RegExpPattern WithWord(
+        public static RegExpPattern WithWordBoundary(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool beginningBoundary = true,
@@ -25,7 +25,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithNonWord(
+        public static RegExpPattern WithNonWordBoundary(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool beginningBoundary = true,

@@ -6,53 +6,65 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class CharacterClassesExtensions
     {
-        public static RegExpPattern WithAnyOneWordCharacter(this RegExpPattern pattern)
+        public static RegExpPattern AnyWordCharacter(this RegExpPattern pattern)
         {
             pattern.AddRule(new RegExpValue(@"\w"));
 
             return pattern;
         }
 
-        public static RegExpPattern WithAnyOneWordOfCharacterType(
+        public static RegExpPattern WordCharacter(
             this RegExpPattern pattern,
             WordCharacter.WordCharacterType wordCharType)
         {
-            pattern.AddRule(new RegExpValue(@"\p{" + $"{WordCharacter.GetValue(wordCharType)}" + "}"));
+            pattern.AddRule(new RegExpValue($"{new RegExpCharacter(wordCharType, true)}"));
 
             return pattern;
         }
 
-        public static RegExpPattern WithAnyOneNonWordCharacter(this RegExpPattern pattern)
+        public static RegExpPattern AnyNonWordCharacter(this RegExpPattern pattern)
         {
             pattern.AddRule(new RegExpValue(@"\W"));
 
             return pattern;
         }
 
-        public static RegExpPattern WithAnyOneWordNotOfCharacterType(
+        public static RegExpPattern WordCharacterOtherThan(
             this RegExpPattern pattern,
             WordCharacter.WordCharacterType wordCharType)
         {
-            pattern.AddRule(new RegExpValue(@"\P{" + $"{WordCharacter.GetValue(wordCharType)}" + "}"));
+            pattern.AddRule(new RegExpValue($"{new RegExpCharacter(wordCharType, false)}"));
 
             return pattern;
         }
 
-        public static RegExpPattern WithAnyOneDigitCharacter(this RegExpPattern pattern)
+        public static RegExpPattern AnyOneDigit(this RegExpPattern pattern)
         {
             pattern.AddRule(new RegExpValue(@"\d"));
 
             return pattern;
         }
 
-        public static RegExpPattern WithCharacter(this RegExpPattern pattern, char character)
+        public static RegExpPattern AnyCharacter(
+            this RegExpPattern pattern)
         {
-            pattern.AddRule(new RegExpValue($"\\u{char.ConvertToUtf32(character.ToString(), 0):X4}"));
+            pattern.AddRule(new RegExpValue("."));
 
             return pattern;
         }
 
-        public static RegExpPattern WithCharacter(
+        public static RegExpPattern Character(
+            this RegExpPattern pattern,
+            char character,
+            bool asUnicodeValue
+        )
+        {
+            pattern.AddRule(new RegExpValue($"{new RegExpCharacter(character, asUnicodeValue)}"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern Character(
             this RegExpPattern pattern,
             EscapeCharacter.EscapeCharacterType character)
         {
@@ -61,7 +73,65 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithCharacterRange(
+        public static RegExpPattern AnyCharacter(
+            this RegExpPattern pattern,
+            params RegExpCharacter[] characters)
+        {
+            var concatChars = characters
+                .Aggregate(string.Empty,
+                           (seed, character) => seed + character
+                );
+
+            pattern.AddRule(new RegExpValue($"[{concatChars}]"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern AnyCharacter(
+            this RegExpPattern pattern,
+            string characters)
+        {
+            var concatChars = characters
+                .Aggregate(string.Empty,
+                           (seed, character) =>
+                               seed + new RegExpCharacter(character, false)
+                );
+
+            pattern.AddRule(new RegExpValue($"[{concatChars}]"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern AnyCharacterOtherThan(
+            this RegExpPattern pattern,
+            params RegExpCharacter[] characters)
+        {
+            var concatChars = characters
+                .Aggregate(string.Empty,
+                           (seed, character) => seed + character
+                );
+
+            pattern.AddRule(new RegExpValue($"[^{concatChars}]"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern AnyCharacterOtherThan(
+            this RegExpPattern pattern,
+            string characters)
+        {
+            var concatChars = characters
+                .Aggregate(string.Empty,
+                           (seed, character) =>
+                               seed + new RegExpCharacter(character, false)
+                );
+
+            pattern.AddRule(new RegExpValue($"[^{concatChars}]"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern CharacterRange(
             this RegExpPattern pattern,
             char from,
             char to)
@@ -71,7 +141,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithCharacterRangeWithException(
+        public static RegExpPattern CharacterRange(
             this RegExpPattern pattern,
             char from,
             char to,
@@ -82,7 +152,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithCharacterRangeWithException(
+        public static RegExpPattern CharacterRange(
             this RegExpPattern pattern,
             char from,
             char to,
@@ -90,72 +160,6 @@ namespace Acamti.RegexpBuilder.Rules
             char exceptionTo)
         {
             pattern.AddRule(new RegExpValue($"[{from}-{to}-[{exceptionFrom}-{exceptionTo}]]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithAnyOneOfTheseCharacters(
-            this RegExpPattern pattern,
-            params RegExpCharacter[] characters)
-        {
-            var concatChars = characters
-                .Aggregate(string.Empty,
-                           (seed, character) => seed + character
-                );
-
-            pattern.AddRule(new RegExpValue($"[{concatChars}]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithAnyOneOfTheseCharacters(
-            this RegExpPattern pattern,
-            string characters)
-        {
-            var concatChars = characters
-                .Aggregate(string.Empty,
-                           (seed, character) =>
-                               seed + new RegExpCharacter(character, false)
-                );
-
-            pattern.AddRule(new RegExpValue($"[{concatChars}]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithAnyOneOfNotTheseCharacters(
-            this RegExpPattern pattern,
-            params RegExpCharacter[] characters)
-        {
-            var concatChars = characters
-                .Aggregate(string.Empty,
-                           (seed, character) => seed + character
-                );
-
-            pattern.AddRule(new RegExpValue($"[^{concatChars}]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithAnyOneOfNotTheseCharacters(
-            this RegExpPattern pattern,
-            string characters)
-        {
-            var concatChars = characters
-                .Aggregate(string.Empty,
-                           (seed, character) =>
-                               seed + new RegExpCharacter(character, false)
-                );
-
-            pattern.AddRule(new RegExpValue($"[^{concatChars}]"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern WithAnyOneCharacter(
-            this RegExpPattern pattern)
-        {
-            pattern.AddRule(new RegExpValue("."));
 
             return pattern;
         }

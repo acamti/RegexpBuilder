@@ -5,7 +5,7 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ConstructsExtensions
     {
-        public static RegExpPattern WithEither(
+        public static RegExpPattern Either(
             this RegExpPattern pattern,
             params Func<RegExpPattern, RegExpPattern>[] rules)
         {
@@ -20,7 +20,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithConditionalRule(
+        public static RegExpPattern ConditionalRule(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             Func<RegExpPattern, RegExpPattern> yes,
@@ -35,7 +35,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithGroupValue(
+        public static RegExpPattern ValueFromGroup(
             this RegExpPattern pattern,
             int index)
         {
@@ -44,11 +44,49 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithGroupValue(
+        public static RegExpPattern ValueFromGroup(
             this RegExpPattern pattern,
             string name)
         {
             pattern.AddRule(new RegExpValue($@"\k<{name}>"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern GroupOf(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
+
+            pattern.AddRule(new RegExpValue($"(?:{ruleToGroup})"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern GroupOf(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            bool capture)
+        {
+            if ( !capture )
+                return pattern.GroupOf(rule);
+
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
+
+            pattern.AddRule(new RegExpValue($"({ruleToGroup})"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern GroupOf(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule,
+            string name)
+        {
+            var ruleToGroup = rule.Invoke(new RegExpPattern());
+
+            pattern.AddRule(new RegExpValue($"(?<{name}>{ruleToGroup})"));
 
             return pattern;
         }

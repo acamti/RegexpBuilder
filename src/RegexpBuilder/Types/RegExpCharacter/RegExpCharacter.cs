@@ -22,6 +22,9 @@ namespace Acamti.RegexpBuilder.Types.RegExpCharacter
         public RegExpCharacter(EscapeCharacter.EscapeCharacterType escapeCharacter) =>
             _value = EscapeCharacter.GetValue(escapeCharacter);
 
+        public RegExpCharacter(WordCharacter.WordCharacterType wordCharacter, bool isIncluded) =>
+            _value = WordCharacter.GetValue(wordCharacter, isIncluded);
+
         public override string ToString() =>
             _value.ToString();
     }

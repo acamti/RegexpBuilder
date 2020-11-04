@@ -20,7 +20,7 @@ namespace Acamti.RegexpBuilder
             _rules.Add(rule);
         }
 
-        public RegExpPattern WithHardBegin()
+        public RegExpPattern MustBeginWith()
         {
             if ( _rules.Any() )
                 throw new Exception("Must not have rule defined before");
@@ -30,7 +30,7 @@ namespace Acamti.RegexpBuilder
             return this;
         }
 
-        public RegExpPattern WithHardStop()
+        public RegExpPattern MustStopWith()
         {
             _rules.Add(new RegExpValue("$"));
 

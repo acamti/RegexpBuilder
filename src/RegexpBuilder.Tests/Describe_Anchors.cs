@@ -14,8 +14,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "^start";
 
             var pattern = new RegExpPattern()
-                .WithHardBegin()
-                .WithValue("start");
+                .MustBeginWith()
+                .Text("start");
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -26,8 +26,8 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "end$";
 
             var pattern = new RegExpPattern()
-                .WithValue("end")
-                .WithHardStop();
+                .Text("end")
+                .MustStopWith();
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -37,9 +37,9 @@ namespace Acamti.RegexpBuilder.Tests
         {
             Assert.ThrowsException<Exception>(
                 () => new RegExpPattern()
-                    .WithValue("end")
-                    .WithHardStop()
-                    .WithValue("not allowed")
+                    .Text("end")
+                    .MustStopWith()
+                    .Text("not allowed")
             );
         }
 
@@ -49,10 +49,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\bare\w*\b";
 
             var pattern = new RegExpPattern()
-                .WithWord(
+                .WithWordBoundary(
                     p => p
-                        .WithValue("are")
-                        .WithZeroOrMoreOf(p2 => p2.WithAnyOneWordCharacter())
+                        .Text("are")
+                        .ZeroOrMoreOf(p2 => p2.AnyWordCharacter())
                 );
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -64,10 +64,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\bword123";
 
             var pattern = new RegExpPattern()
-                .WithWord(
+                .WithWordBoundary(
                     p => p
-                        .WithValue("word")
-                        .WithValue("123"),
+                        .Text("word")
+                        .Text("123"),
                     true,
                     false
                 );
@@ -81,10 +81,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"word123\b";
 
             var pattern = new RegExpPattern()
-                .WithWord(
+                .WithWordBoundary(
                     p => p
-                        .WithValue("word")
-                        .WithValue("123"),
+                        .Text("word")
+                        .Text("123"),
                     false
                 );
 
@@ -97,10 +97,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\Bgame\B";
 
             var pattern = new RegExpPattern()
-                .WithNonWord(
-                    p => p
-                        .WithValue("game")
-                );
+                .WithNonWordBoundary(p => p.Text("game"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -111,9 +108,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\bed";
 
             var pattern = new RegExpPattern()
-                .WithWord(
-                    p => p
-                        .WithValue("ed"),
+                .WithWordBoundary(
+                    p =>
+                        p.Text("ed"),
                     true,
                     false
                 );
@@ -127,11 +124,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"Wo\b";
 
             var pattern = new RegExpPattern()
-                .WithWord(
-                    p => p
-                        .WithValue("Wo"),
-                    false
-                );
+                .WithWordBoundary(p => p.Text("Wo"), false);
 
             pattern.ToString().Should().Be(EXPECTED);
         }

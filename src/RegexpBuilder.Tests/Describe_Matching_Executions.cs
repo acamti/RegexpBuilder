@@ -1,5 +1,8 @@
-﻿using Acamti.RegexpBuilder.Rules;
+﻿using System;
+using System.Text.RegularExpressions;
+using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
+using Acamti.RegexpBuilder.Types.RegExpCharacter;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,7 +15,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_1()
         {
             var pattern = new RegExpPattern()
-                .WithValue("dog");
+                .Text("dog");
 
             pattern.IsMatch("The quick brown fox jumps over the lazy dog")
                 .Should()
@@ -23,8 +26,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_2()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrMoreOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .ZeroOrMoreOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
             pattern.IsMatch("ab").Should().BeTrue();
@@ -38,8 +41,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_3()
         {
             var pattern = new RegExpPattern()
-                .WithOneOrMoreOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .OneOrMoreOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.IsMatch("ab").Should().BeTrue();
             pattern.IsMatch("aab").Should().BeTrue();
@@ -53,8 +56,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_4()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrOneOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .ZeroOrOneOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
             pattern.IsMatch("ab").Should().BeTrue();
@@ -68,8 +71,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_5()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrOneOf(p => p.WithValue("a"))
-                .WithValue("b");
+                .ZeroOrOneOf(p => p.Text("a"))
+                .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
             pattern.IsMatch("ab").Should().BeTrue();
@@ -83,7 +86,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_6()
         {
             var pattern = new RegExpPattern()
-                .WithAnyOneWordCharacter();
+                .AnyWordCharacter();
 
             pattern.IsMatch("a").Should().BeTrue();
             pattern.IsMatch("1").Should().BeTrue();
@@ -96,7 +99,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_7()
         {
             var pattern = new RegExpPattern()
-                .WithAnyOneNonWordCharacter();
+                .AnyNonWordCharacter();
 
             pattern.IsMatch(".").Should().BeTrue();
             pattern.IsMatch(" ").Should().BeTrue();
@@ -109,7 +112,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_8()
         {
             var pattern = new RegExpPattern()
-                .WithAnyOneDigitCharacter();
+                .AnyOneDigit();
 
             pattern.IsMatch("1").Should().BeTrue();
 
@@ -122,9 +125,9 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_9()
         {
             var pattern = new RegExpPattern()
-                .WithEither(
-                    s1 => s1.WithValue("him"),
-                    s2 => s2.WithValue("her"));
+                .Either(
+                    s1 => s1.Text("him"),
+                    s2 => s2.Text("her"));
 
             pattern.IsMatch("him").Should().BeTrue();
             pattern.IsMatch("her").Should().BeTrue();
@@ -137,10 +140,10 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_10()
         {
             var pattern = new RegExpPattern()
-                .WithConditionalRule(
-                    c => c.WithAnyOneWordCharacter().WithValue("i").WithAnyOneWordCharacter(),
-                    t => t.WithValue("him"),
-                    f => f.WithValue("her"));
+                .ConditionalRule(
+                    c => c.AnyWordCharacter().Text("i").AnyWordCharacter(),
+                    t => t.Text("him"),
+                    f => f.Text("her"));
 
             pattern.IsMatch("him").Should().BeTrue();
             pattern.IsMatch("her").Should().BeTrue();
@@ -153,8 +156,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_11()
         {
             var pattern = new RegExpPattern()
-                .WithHardBegin()
-                .WithValue("hi");
+                .MustBeginWith()
+                .Text("hi");
 
             pattern.IsMatch("hi").Should().BeTrue();
             pattern.IsMatch("him").Should().BeTrue();
@@ -169,8 +172,8 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_12()
         {
             var pattern = new RegExpPattern()
-                .WithValue("hi")
-                .WithHardStop();
+                .Text("hi")
+                .MustStopWith();
 
             pattern.IsMatch("hi").Should().BeTrue();
             pattern.IsMatch(" hi").Should().BeTrue();
@@ -185,10 +188,10 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_13()
         {
             var pattern = new RegExpPattern()
-                .WithWord(
+                .WithWordBoundary(
                     p => p
-                        .WithValue("are")
-                        .WithZeroOrMoreOf(p2 => p2.WithAnyOneWordCharacter())
+                        .Text("are")
+                        .ZeroOrMoreOf(p2 => p2.AnyWordCharacter())
                 );
 
             pattern.IsMatch("area").Should().BeTrue();
@@ -202,10 +205,10 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_16()
         {
             var pattern = new RegExpPattern()
-                .WithNonWord(
+                .WithNonWordBoundary(
                     p => p
-                        .WithValue("qu")
-                        .WithOneOrMoreOf(p2 => p2.WithAnyOneWordCharacter()),
+                        .Text("qu")
+                        .OneOrMoreOf(p2 => p2.AnyWordCharacter()),
                     true,
                     false
                 );
@@ -222,7 +225,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_17()
         {
             var pattern = new RegExpPattern()
-                .WithCharacterRange('A', 'Z');
+                .CharacterRange('A', 'Z');
 
             pattern.IsMatch("A").Should().BeTrue();
             pattern.IsMatch("B").Should().BeTrue();
@@ -238,7 +241,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_18()
         {
             var pattern = new RegExpPattern()
-                .WithCharacterRangeWithException('A', 'Z', 'N');
+                .CharacterRange('A', 'Z', 'N');
 
             pattern.IsMatch("A").Should().BeTrue();
             pattern.IsMatch("B").Should().BeTrue();
@@ -255,7 +258,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_19()
         {
             var pattern = new RegExpPattern()
-                .WithCharacterRangeWithException('A', 'Z', 'M', 'P');
+                .CharacterRange('A', 'Z', 'M', 'P');
 
             pattern.IsMatch("A").Should().BeTrue();
             pattern.IsMatch("B").Should().BeTrue();
@@ -275,7 +278,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_20()
         {
             var pattern = new RegExpPattern()
-                .OnlyIfAheadIs(p => p.WithValue("b"), p => p.WithValue("a"));
+                .OnlyIfAheadIs(p => p.Text("b"), p => p.Text("a"));
 
             pattern.IsMatch("ab").Should().BeTrue();
             pattern.IsMatch("cab").Should().BeTrue();
@@ -289,7 +292,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_21()
         {
             var pattern = new RegExpPattern()
-                .OnlyIfAheadIsNot(p => p.WithValue("b"), p => p.WithValue("a"));
+                .OnlyIfAheadIsNot(p => p.Text("b"), p => p.Text("a"));
 
             pattern.IsMatch("a").Should().BeTrue();
             pattern.IsMatch("ca").Should().BeTrue();
@@ -303,7 +306,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_22()
         {
             var pattern = new RegExpPattern()
-                .OnlyIfBehindIs(p => p.WithValue("c"), p => p.WithValue("a"));
+                .OnlyIfBehindIs(p => p.Text("c"), p => p.Text("a"));
 
             pattern.IsMatch("ca").Should().BeTrue();
             pattern.IsMatch("cab").Should().BeTrue();
@@ -317,7 +320,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_23()
         {
             var pattern = new RegExpPattern()
-                .OnlyIfBehindIsNot(p => p.WithValue("c"), p => p.WithValue("a"));
+                .OnlyIfBehindIsNot(p => p.Text("c"), p => p.Text("a"));
 
             pattern.IsMatch("a").Should().BeTrue();
             pattern.IsMatch("ab").Should().BeTrue();
@@ -328,40 +331,10 @@ namespace Acamti.RegexpBuilder.Tests
         }
 
         [TestMethod]
-        [DataRow("a", "A", WordCharacter.WordCharacterType.LowerCase)]
-        public void Test_IsMatch_24(
-            string match,
-            string noMatch,
-            WordCharacter.WordCharacterType wordType)
-        {
-            var pattern = new RegExpPattern()
-                .WithAnyOneWordOfCharacterType(wordType);
-
-            pattern.IsMatch(match).Should().BeTrue();
-
-            pattern.IsMatch(noMatch).Should().BeFalse();
-        }
-
-        [TestMethod]
-        [DataRow("A", "a", WordCharacter.WordCharacterType.LowerCase)]
-        public void Test_IsMatch_25(
-            string match,
-            string noMatch,
-            WordCharacter.WordCharacterType wordType)
-        {
-            var pattern = new RegExpPattern()
-                .WithAnyOneWordNotOfCharacterType(wordType);
-
-            pattern.IsMatch(match).Should().BeTrue();
-
-            pattern.IsMatch(noMatch).Should().BeFalse();
-        }
-
-        [TestMethod]
         public void Test_IsMatch_26()
         {
             var pattern = new RegExpPattern()
-                .WithCharacter('❎');
+                .Character('❎', true);
 
             pattern.IsMatch("❎").Should().BeTrue();
 
@@ -372,7 +345,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_27()
         {
             var pattern = new RegExpPattern()
-                .WithAnyOneOfTheseCharacters("ae");
+                .AnyCharacter("ae");
 
             pattern.IsMatch("gray").Should().BeTrue();
 
@@ -383,11 +356,72 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_28()
         {
             var pattern = new RegExpPattern()
-                .WithAnyOneOfNotTheseCharacters("aei");
+                .AnyCharacterOtherThan("aei");
 
             pattern.IsMatch("reign").Should().BeTrue();
 
             pattern.IsMatch("aei").Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_29()
+        {
+            const string EXPECTED_REGEX_PATTERN = @"\G(.+)[\t\u007C](.+)\r?\n";
+
+            var pattern = new RegExpPattern()
+                .ByOnlyMatchingWherePreviousMatchEnded()
+                .GroupOf(
+                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
+                    true)
+                .AnyCharacter(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('|', true))
+                .GroupOf(
+                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
+                    true)
+                .ZeroOrOneOf(p => p.Character(EscapeCharacter.EscapeCharacterType.CarriageReturn))
+                .Character(EscapeCharacter.EscapeCharacterType.NewLine);
+
+            pattern.ToString().Should().Be(EXPECTED_REGEX_PATTERN);
+
+            const string INPUT = "Mumbai, India|13,922,125\t\n" +
+                "Shanghai, China\t13,831,900\n" +
+                "Karachi, Pakistan|12,991,000\n" +
+                "Delhi, India\t12,259,230\n" +
+                "Istanbul, Turkey|11,372,613\n";
+
+            Console.WriteLine("Population of the World's Largest Cities, 2009");
+            Console.WriteLine();
+            Console.WriteLine("{0,-20} {1,10}", "City", "Population");
+            Console.WriteLine();
+
+            foreach (Match match in pattern.Matches(INPUT))
+            {
+                Console.WriteLine("{0,-20} {1,10}",
+                                  match.Groups[1].Value,
+                                  match.Groups[2].Value);
+            }
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_30()
+        {
+            const string EXPECTED = @"gr[ae]y\s\S+?[\s\p{P}]";
+
+            var pattern = new RegExpPattern()
+                .Text("gr")
+                .AnyCharacter("ae")
+                .Text("y")
+                .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
+                .OneOrMoreOf(
+                    p => p.Character(EscapeCharacter.EscapeCharacterType.NonWhiteSpace),
+                    true
+                )
+                .AnyCharacter(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                    new RegExpCharacter(WordCharacter.WordCharacterType.Punctuation, true));
+
+            pattern.ToString().Should().Be(EXPECTED);
         }
     }
 }
