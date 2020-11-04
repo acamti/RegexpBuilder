@@ -1,5 +1,6 @@
 ﻿using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
+using Acamti.RegexpBuilder.Types.RegExpCharacter;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -88,18 +89,16 @@ namespace Acamti.RegexpBuilder.Tests
         }
 
         [TestMethod]
-        [DataRow(CharacterClass.CharacterClassType.Bell, "0007")]
-        [DataRow(CharacterClass.CharacterClassType.BackSpace, "0008")]
-        [DataRow(CharacterClass.CharacterClassType.Tab, "0009")]
-        [DataRow(CharacterClass.CharacterClassType.CarriageReturn, "000D")]
-        [DataRow(CharacterClass.CharacterClassType.VerticalTab, "000B")]
-        [DataRow(CharacterClass.CharacterClassType.FormFeed, "000C")]
-        [DataRow(CharacterClass.CharacterClassType.NewLine, "000A")]
-        [DataRow(CharacterClass.CharacterClassType.Escape, "001B")]
-        public void Test_Escaped_Character_Pattern(CharacterClass.CharacterClassType type, string value)
+        [DataRow(EscapeCharacter.EscapeCharacterType.Bell, "\\a")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.BackSpace, "\\b")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.Tab, "\\t")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.CarriageReturn, "\\r")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.VerticalTab, "\\v")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.FormFeed, "\\f")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.NewLine, "\\n")]
+        [DataRow(EscapeCharacter.EscapeCharacterType.Escape, "\\e")]
+        public void Test_Escaped_Character_Pattern(EscapeCharacter.EscapeCharacterType type, string expected)
         {
-            var expected = @"\u" + value;
-
             var pattern = new RegExpPattern()
                 .WithCharacter(type);
 
@@ -151,12 +150,88 @@ namespace Acamti.RegexpBuilder.Tests
         }
 
         [TestMethod]
+        public void Test_Any_Of_One_Character_2_Pattern()
+        {
+            const string EXPECTED = "[\\te]";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfTheseCharacters(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('e', false));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Any_Of_One_Character_3_Pattern()
+        {
+            const string EXPECTED = "[\\t\\*]";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfTheseCharacters(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('*', false));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Any_Of_One_Character_4_Pattern()
+        {
+            const string EXPECTED = "[\\t\\u002A]";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfTheseCharacters(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('*', true));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
         public void Test_Negative_Any_Of_One_Character_Pattern()
         {
             const string EXPECTED = "[^aei]";
 
             var pattern = new RegExpPattern()
                 .WithAnyOneOfNotTheseCharacters("aei");
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Negative_Any_Of_One_Character_3_Pattern()
+        {
+            const string EXPECTED = "[^\\t\\*]";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfNotTheseCharacters(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('*', false));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Negative_Any_Of_One_Character_4_Pattern()
+        {
+            const string EXPECTED = "[^\\t\\u002A]";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneOfNotTheseCharacters(
+                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
+                    new RegExpCharacter('*', true));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+        
+        [TestMethod]
+        public void Test_Wild_Char_Pattern()
+        {
+            const string EXPECTED = ".";
+
+            var pattern = new RegExpPattern()
+                .WithAnyOneCharacter();
 
             pattern.ToString().Should().Be(EXPECTED);
         }

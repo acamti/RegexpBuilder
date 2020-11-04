@@ -52,7 +52,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithWord(
                     p => p
                         .WithValue("are")
-                        .WithZeroOrMore(p2 => p2.WithAnyOneWordCharacter())
+                        .WithZeroOrMoreOf(p2 => p2.WithAnyOneWordCharacter())
                 );
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -132,6 +132,17 @@ namespace Acamti.RegexpBuilder.Tests
                         .WithValue("Wo"),
                     false
                 );
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Matching_Where_Previous_Match_Ended_Pattern()
+        {
+            const string EXPECTED = @"\G";
+
+            var pattern = new RegExpPattern()
+                .ByOnlyMatchingWherePreviousMatchEnded();
 
             pattern.ToString().Should().Be(EXPECTED);
         }

@@ -20,6 +20,11 @@ namespace Acamti.RegexpBuilder
             return regExp.Split(input);
         }
 
+        public static MatchCollection Matches(
+            this RegExpPattern pattern,
+            string input) =>
+            new Regex(pattern.ToString()).Matches(input);
+
         public static IEnumerable<(int index, string name, string value)> Groups(
             this RegExpPattern pattern,
             string input)

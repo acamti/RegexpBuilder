@@ -17,13 +17,15 @@ namespace Acamti.RegexpBuilder.Rules
             }
         }
 
-        public static RegExpPattern WithZeroOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithZeroOrMoreOf(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                var ruleToAdd = new RegExpPattern().WithGroupOf(p =>
                 {
                     p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
@@ -43,13 +45,13 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithOneOrMore(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithOneOrMoreOf(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                var ruleToAdd = new RegExpPattern().WithGroupOf(p =>
                 {
                     p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
@@ -69,13 +71,13 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithZeroOrOne(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
+        public static RegExpPattern WithZeroOrOneOf(this RegExpPattern pattern, Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().WithGroup(p =>
+                var ruleToAdd = new RegExpPattern().WithGroupOf(p =>
                 {
                     p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 

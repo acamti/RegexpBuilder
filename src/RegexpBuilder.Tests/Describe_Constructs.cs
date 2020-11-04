@@ -45,9 +45,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X(\d)F";
 
             var pattern = new RegExpPattern()
-                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithGroupOf(p => p.WithAnyOneDigitCharacter(), true)
                 .WithValue("X")
-                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithGroupOf(p => p.WithAnyOneDigitCharacter(), true)
                 .WithValue("F");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -59,7 +59,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X\1F";
 
             var pattern = new RegExpPattern()
-                .WithGroup(p => p.WithAnyOneDigitCharacter(), true)
+                .WithGroupOf(p => p.WithAnyOneDigitCharacter(), true)
                 .WithValue("X")
                 .WithGroupValue(0)
                 .WithValue("F");
@@ -73,7 +73,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(?<One>\d)x\k<One>F";
 
             var pattern = new RegExpPattern()
-                .WithGroup(p => p.WithAnyOneDigitCharacter(), "One")
+                .WithGroupOf(p => p.WithAnyOneDigitCharacter(), "One")
                 .WithValue("x")
                 .WithGroupValue("One")
                 .WithValue("F");

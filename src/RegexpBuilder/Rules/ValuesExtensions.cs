@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Acamti.RegexpBuilder.Types.RegExpCharacter;
 
 namespace Acamti.RegexpBuilder.Rules
 {
@@ -9,7 +10,13 @@ namespace Acamti.RegexpBuilder.Rules
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
-            pattern.AddRule(new RegExpValue(Tools.Escape(value)));
+            var concatChars = value
+                .Aggregate(string.Empty,
+                           (seed, character) =>
+                               seed + new RegExpCharacter(character, false)
+                );
+
+            pattern.AddRule(new RegExpValue(concatChars));
 
             return pattern;
         }
@@ -31,7 +38,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithGroup(
+        public static RegExpPattern WithGroupOf(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule)
         {
@@ -42,13 +49,13 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithGroup(
+        public static RegExpPattern WithGroupOf(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             bool capture)
         {
             if ( !capture )
-                return pattern.WithGroup(rule);
+                return pattern.WithGroupOf(rule);
 
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
@@ -57,7 +64,7 @@ namespace Acamti.RegexpBuilder.Rules
             return pattern;
         }
 
-        public static RegExpPattern WithGroup(
+        public static RegExpPattern WithGroupOf(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
             string name)

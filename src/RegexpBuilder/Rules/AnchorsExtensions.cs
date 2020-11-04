@@ -45,5 +45,12 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern ByOnlyMatchingWherePreviousMatchEnded(this RegExpPattern pattern)
+        {
+            pattern.AddRule(new RegExpValue(@"\G"));
+
+            return pattern;
+        }
     }
 }

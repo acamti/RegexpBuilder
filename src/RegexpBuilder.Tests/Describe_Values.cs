@@ -35,9 +35,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:6?6?6?)";
 
             var pattern = new RegExpPattern()
-                .WithGroup(
+                .WithGroupOf(
                     p => p.Repeat(
-                        r => r.WithZeroOrOne(p2 => p2.WithValue("6")),
+                        r => r.WithZeroOrOneOf(p2 => p2.WithValue("6")),
                         3
                     )
                 );

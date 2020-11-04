@@ -13,7 +13,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a*b";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrMore(p => p.WithValue("a"))
+                .WithZeroOrMoreOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -25,7 +25,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:dog)*s";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrMore(p => p.WithValue("dog"))
+                .WithZeroOrMoreOf(p => p.WithValue("dog"))
                 .WithValue("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -37,7 +37,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a+b";
 
             var pattern = new RegExpPattern()
-                .WithOneOrMore(p => p.WithValue("a"))
+                .WithOneOrMoreOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -49,7 +49,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:cat)+s";
 
             var pattern = new RegExpPattern()
-                .WithOneOrMore(p => p.WithValue("cat"))
+                .WithOneOrMoreOf(p => p.WithValue("cat"))
                 .WithValue("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -61,7 +61,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a?b";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrOne(p => p.WithValue("a"))
+                .WithZeroOrOneOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -73,7 +73,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:duck)?s";
 
             var pattern = new RegExpPattern()
-                .WithZeroOrOne(p => p.WithValue("duck"))
+                .WithZeroOrOneOf(p => p.WithValue("duck"))
                 .WithValue("s");
 
             pattern.ToString().Should().Be(EXPECTED);

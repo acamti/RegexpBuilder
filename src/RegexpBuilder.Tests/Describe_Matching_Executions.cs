@@ -23,7 +23,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_2()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrMore(p => p.WithValue("a"))
+                .WithZeroOrMoreOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -38,7 +38,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_3()
         {
             var pattern = new RegExpPattern()
-                .WithOneOrMore(p => p.WithValue("a"))
+                .WithOneOrMoreOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.IsMatch("ab").Should().BeTrue();
@@ -53,7 +53,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_4()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrOne(p => p.WithValue("a"))
+                .WithZeroOrOneOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -68,7 +68,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_5()
         {
             var pattern = new RegExpPattern()
-                .WithZeroOrOne(p => p.WithValue("a"))
+                .WithZeroOrOneOf(p => p.WithValue("a"))
                 .WithValue("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -188,7 +188,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithWord(
                     p => p
                         .WithValue("are")
-                        .WithZeroOrMore(p2 => p2.WithAnyOneWordCharacter())
+                        .WithZeroOrMoreOf(p2 => p2.WithAnyOneWordCharacter())
                 );
 
             pattern.IsMatch("area").Should().BeTrue();
@@ -205,7 +205,7 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithNonWord(
                     p => p
                         .WithValue("qu")
-                        .WithOneOrMore(p2 => p2.WithAnyOneWordCharacter()),
+                        .WithOneOrMoreOf(p2 => p2.WithAnyOneWordCharacter()),
                     true,
                     false
                 );
