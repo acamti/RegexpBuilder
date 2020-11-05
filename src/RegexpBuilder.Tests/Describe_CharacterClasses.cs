@@ -165,8 +165,9 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .AnyCharacter(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('e', false));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('e')
+                );
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -174,12 +175,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Any_Of_One_Character_3_Pattern()
         {
-            const string EXPECTED = "[\\t\\*]";
+            const string EXPECTED = "[\\t*]";
 
             var pattern = new RegExpPattern()
                 .AnyCharacter(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('*', false));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('*'));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -191,8 +192,8 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .AnyCharacter(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('*', true));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('*', true));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -215,8 +216,8 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .AnyCharacterOtherThan(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('*', false));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('*'));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -228,8 +229,8 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .AnyCharacterOtherThan(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('*', true));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('*', true));
 
             pattern.ToString().Should().Be(EXPECTED);
         }

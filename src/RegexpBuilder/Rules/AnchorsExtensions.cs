@@ -52,5 +52,19 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern AtEndOfStringOnly(this RegExpPattern pattern)
+        {
+            pattern.AddRule(new RegExpValue(@"\z"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern AtEndOfStringOrBeforeNewLine(this RegExpPattern pattern)
+        {
+            pattern.AddRule(new RegExpValue(@"\Z"));
+
+            return pattern;
+        }
     }
 }

@@ -139,5 +139,29 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_End_Of_String_Pattern()
+        {
+            const string EXPECTED = @"abc\z";
+
+            var pattern = new RegExpPattern()
+                .Text("abc")
+                .AtEndOfStringOnly();
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_End_Of_String_Or_Before_New_Line_Pattern()
+        {
+            const string EXPECTED = @"abc\Z";
+
+            var pattern = new RegExpPattern()
+                .Text("abc")
+                .AtEndOfStringOrBeforeNewLine();
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
     }
 }

@@ -331,6 +331,37 @@ namespace Acamti.RegexpBuilder.Tests
         }
 
         [TestMethod]
+        public void Test_IsMatch_24()
+        {
+            const string EXPECTED = @"\b[A-Z]\w*\b";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(
+                    p =>
+                        p.CharacterRange('A', 'Z')
+                            .ZeroOrMoreOf(
+                                p2 => p2.AnyWordCharacter()));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_25()
+        {
+            const string EXPECTED = @"\bth[^o]\w+\b";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(
+                    p => p
+                        .Text("th")
+                        .AnyCharacterOtherThan(RegExpCharacter.Build('o'))
+                        .OneOrMoreOf(p3 => p3.AnyWordCharacter())
+                );
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
         public void Test_IsMatch_26()
         {
             var pattern = new RegExpPattern()
@@ -374,8 +405,8 @@ namespace Acamti.RegexpBuilder.Tests
                     p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
                     true)
                 .AnyCharacter(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.Tab),
-                    new RegExpCharacter('|', true))
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
+                    RegExpCharacter.Build('|', true))
                 .GroupOf(
                     p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
                     true)
@@ -418,8 +449,43 @@ namespace Acamti.RegexpBuilder.Tests
                     true
                 )
                 .AnyCharacter(
-                    new RegExpCharacter(EscapeCharacter.EscapeCharacterType.WhiteSpace),
-                    new RegExpCharacter(WordCharacter.WordCharacterType.Punctuation, true));
+                    RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                    RegExpWordCharacter.Build(WordCharacter.WordCharacterType.Punctuation, true));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_31()
+        {
+            const string EXPECTED = @"^.+";
+
+            var pattern = new RegExpPattern()
+                .MustBeginWith()
+                .OneOrMoreOf(p => p.AnyCharacter());
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_32()
+        {
+            const string EXPECTED = @"\b.*[.?!;:](\s|\z)";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(
+                    p => p
+                        .ZeroOrMoreOf(p2 => p2.AnyCharacter())
+                        .AnyCharacter(".?!;:")
+                        .GroupOf(
+                            p2 => p2
+                                .Either(
+                                    p3 => p3.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                                    p3 => p3.AtEndOfStringOnly()
+                                ),
+                            true),
+                    true,
+                    false);
 
             pattern.ToString().Should().Be(EXPECTED);
         }

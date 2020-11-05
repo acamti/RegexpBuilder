@@ -2,30 +2,37 @@
 
 namespace Acamti.RegexpBuilder.Types.RegExpCharacter
 {
-    public class RegExpCharacter
+    public class RegExpCharacter : IRegExpCharacter
     {
+        private readonly bool _asUnicode;
+
         private readonly List<char> _mustEscape =
             new List<char>(new[] { '.', '$', '^', '{', '[', '(', '|', ')', '*', '+', '?', '\\' });
 
-        private readonly object _value;
+        private readonly char _value;
 
-        public RegExpCharacter(char value, bool asUnicodeValue)
+        private RegExpCharacter(char value, bool asUnicode)
         {
-            if ( asUnicodeValue )
-                _value = $"\\u{char.ConvertToUtf32(value.ToString(), 0):X4}";
-            else if ( _mustEscape.Contains(value) )
-                _value = "\\" + value;
-            else
-                _value = value;
+            _value = value;
+            _asUnicode = asUnicode;
         }
 
-        public RegExpCharacter(EscapeCharacter.EscapeCharacterType escapeCharacter) =>
-            _value = EscapeCharacter.GetValue(escapeCharacter);
+        public bool EscapeChar { get; set; } = true;
 
-        public RegExpCharacter(WordCharacter.WordCharacterType wordCharacter, bool isIncluded) =>
-            _value = WordCharacter.GetValue(wordCharacter, isIncluded);
+        public override string ToString()
+        {
+            if ( _asUnicode )
+                return $"\\u{char.ConvertToUtf32(_value.ToString(), 0):X4}";
 
-        public override string ToString() =>
-            _value.ToString();
+            if ( EscapeChar && _mustEscape.Contains(_value) )
+                return "\\" + _value;
+
+            return _value.ToString();
+        }
+
+        public static IRegExpCharacter Build(
+            char character,
+            bool asUnicode = false)
+            => new RegExpCharacter(character, asUnicode);
     }
 }

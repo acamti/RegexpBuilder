@@ -11,9 +11,10 @@ namespace Acamti.RegexpBuilder.Rules
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
             var concatChars = value
-                .Aggregate(string.Empty,
-                           (seed, character) =>
-                               seed + new RegExpCharacter(character, false)
+                .Aggregate(
+                    string.Empty,
+                    (seed, character) =>
+                        seed + RegExpCharacter.Build(character)
                 );
 
             pattern.AddRule(new RegExpValue(concatChars));
