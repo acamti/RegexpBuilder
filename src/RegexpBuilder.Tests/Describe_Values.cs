@@ -39,7 +39,8 @@ namespace Acamti.RegexpBuilder.Tests
                     p => p.Repeat(
                         r => r.ZeroOrOneOf(p2 => p2.Text("6")),
                         3
-                    )
+                    ),
+                    false
                 );
 
             pattern.ToString().Should().Be(EXPECTED);

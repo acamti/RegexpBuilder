@@ -45,9 +45,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X(\d)F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyOneDigit(), true)
+                .GroupOf(p => p.AnyOneDigit())
                 .Text("X")
-                .GroupOf(p => p.AnyOneDigit(), true)
+                .GroupOf(p => p.AnyOneDigit())
                 .Text("F");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -59,7 +59,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X\1F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyOneDigit(), true)
+                .GroupOf(p => p.AnyOneDigit())
                 .Text("X")
                 .ValueFromGroup(1)
                 .Text("F");

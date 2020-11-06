@@ -26,12 +26,14 @@ namespace Acamti.RegexpBuilder.Rules
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().GroupOf(p =>
-                {
-                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+                var ruleToAdd = new RegExpPattern()
+                    .GroupOf(p =>
+                             {
+                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                    return p;
-                });
+                                 return p;
+                             },
+                             false);
 
                 pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(asFewAsPossible)}"));
             }
@@ -65,12 +67,14 @@ namespace Acamti.RegexpBuilder.Rules
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().GroupOf(p =>
-                {
-                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+                var ruleToAdd = new RegExpPattern()
+                    .GroupOf(p =>
+                             {
+                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                    return p;
-                });
+                                 return p;
+                             },
+                             false);
 
                 pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(asFewAsPossible)}"));
             }
@@ -95,12 +99,14 @@ namespace Acamti.RegexpBuilder.Rules
 
             if ( IsText(ruleToExtract) )
             {
-                var ruleToAdd = new RegExpPattern().GroupOf(p =>
-                {
-                    p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+                var ruleToAdd = new RegExpPattern()
+                    .GroupOf(p =>
+                             {
+                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                    return p;
-                });
+                                 return p;
+                             },
+                             false);
 
                 pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(asFewAsPossible)}"));
             }

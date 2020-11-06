@@ -55,26 +55,15 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern GroupOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule)
-        {
-            var ruleToGroup = rule.Invoke(new RegExpPattern());
-
-            pattern.AddRule(new RegExpValue($"(?:{ruleToGroup})"));
-
-            return pattern;
-        }
-
-        public static RegExpPattern GroupOf(
-            this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
-            bool capture)
+            bool capture = true)
         {
-            if ( !capture )
-                return pattern.GroupOf(rule);
-
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
-            pattern.AddRule(new RegExpValue($"({ruleToGroup})"));
+            pattern.AddRule(
+                capture
+                    ? new RegExpValue($"({ruleToGroup})")
+                    : new RegExpValue($"(?:{ruleToGroup})"));
 
             return pattern;
         }

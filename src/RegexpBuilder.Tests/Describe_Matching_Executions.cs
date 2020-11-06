@@ -402,14 +402,12 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .ByOnlyMatchingWherePreviousMatchEnded()
                 .GroupOf(
-                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
-                    true)
+                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()))
                 .AnyCharacter(
                     RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
                     RegExpCharacter.Build('|', true))
                 .GroupOf(
-                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()),
-                    true)
+                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()))
                 .ZeroOrOneOf(p => p.Character(EscapeCharacter.EscapeCharacterType.CarriageReturn))
                 .Character(EscapeCharacter.EscapeCharacterType.NewLine);
 
@@ -482,8 +480,7 @@ namespace Acamti.RegexpBuilder.Tests
                                 .Either(
                                     p3 => p3.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
                                     p3 => p3.AtEndOfStringOnly()
-                                ),
-                            true),
+                                )),
                     true,
                     false);
 
@@ -496,7 +493,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\w)\1";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyWordCharacter(), true)
+                .GroupOf(p => p.AnyWordCharacter())
                 .ValueFromGroup(1);
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -511,12 +508,10 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithWordBoundary(
                     p => p.GroupOf(
                             p1 => p1.OneOrMoreOf(
-                                p2 => p2.AnyWordCharacter()),
-                            true)
+                                p2 => p2.AnyWordCharacter()))
                         .Time(
                             p1 => p1.GroupOf(
-                                p2 => p2.AnyNonWordCharacter(),
-                                true),
+                                p2 => p2.AnyNonWordCharacter()),
                             1,
                             2),
                     true,
