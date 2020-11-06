@@ -39,7 +39,7 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             int index)
         {
-            pattern.AddRule(new RegExpValue($@"\{index + 1}"));
+            pattern.AddRule(new RegExpValue($@"\{index}"));
 
             return pattern;
         }

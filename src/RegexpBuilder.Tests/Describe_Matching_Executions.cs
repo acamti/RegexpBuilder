@@ -489,5 +489,41 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_IsMatch_33()
+        {
+            const string EXPECTED = @"(\w)\1";
+
+            var pattern = new RegExpPattern()
+                .GroupOf(p => p.AnyWordCharacter(), true)
+                .ValueFromGroup(1);
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_34()
+        {
+            const string EXPECTED = @"\b(\w+)(\W){1,2}";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(
+                    p => p.GroupOf(
+                            p1 => p1.OneOrMoreOf(
+                                p2 => p2.AnyWordCharacter()),
+                            true)
+                        .Time(
+                            p1 => p1.GroupOf(
+                                p2 => p2.AnyNonWordCharacter(),
+                                true),
+                            1,
+                            2),
+                    true,
+                    false
+                );
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
     }
 }

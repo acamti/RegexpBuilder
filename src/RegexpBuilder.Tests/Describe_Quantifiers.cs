@@ -150,5 +150,16 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_Time_From_To_Pattern()
+        {
+            const string EXPECTED = "A{1,3}";
+
+            var pattern = new RegExpPattern()
+                .Time(p => p.Text("A"), 1, 3);
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
     }
 }

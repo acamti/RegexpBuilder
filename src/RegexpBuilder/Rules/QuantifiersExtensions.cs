@@ -114,5 +114,22 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern Time(
+            this RegExpPattern pattern,
+            Func<RegExpPattern,
+                RegExpPattern> rule,
+            int from,
+            int to)
+        {
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
+
+            var ruleToAdd = new RegExpPattern();
+            ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
+
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}{{{from},{to}}}"));
+
+            return pattern;
+        }
     }
 }

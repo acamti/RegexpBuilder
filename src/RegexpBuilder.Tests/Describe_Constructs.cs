@@ -61,7 +61,7 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .GroupOf(p => p.AnyOneDigit(), true)
                 .Text("X")
-                .ValueFromGroup(0)
+                .ValueFromGroup(1)
                 .Text("F");
 
             pattern.ToString().Should().Be(EXPECTED);
