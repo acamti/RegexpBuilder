@@ -29,9 +29,9 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .ConditionalRule(
                     p => p
-                        .AnyWordCharacter()
+                        .Text("\\w", false)
                         .Text("i")
-                        .AnyWordCharacter(),
+                        .Text("\\w", false),
                     p => p.Text("him"),
                     p => p.Text("her")
                 );
@@ -45,9 +45,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X(\d)F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyOneDigit())
+                .GroupOf(p => p.Text("\\d", false))
                 .Text("X")
-                .GroupOf(p => p.AnyOneDigit())
+                .GroupOf(p => p.Text("\\d", false))
                 .Text("F");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -59,7 +59,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X\1F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyOneDigit())
+                .GroupOf(p => p.Text("\\d", false))
                 .Text("X")
                 .ValueFromGroup(1)
                 .Text("F");
@@ -73,7 +73,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(?<One>\d)x\k<One>F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyOneDigit(), "One")
+                .GroupOf(p => p.Text("\\d", false), "One")
                 .Text("x")
                 .ValueFromGroup("One")
                 .Text("F");

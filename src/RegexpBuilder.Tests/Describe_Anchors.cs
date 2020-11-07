@@ -1,4 +1,4 @@
-﻿using Acamti.RegexpBuilder.Rules;
+using Acamti.RegexpBuilder.Rules;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,13 +34,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Word_Boundary_Pattern()
         {
-            const string EXPECTED = @"\bare\w*\b";
+            const string EXPECTED = @"\bare\b";
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
                     p => p
                         .Text("are")
-                        .ZeroOrMoreOf(p2 => p2.AnyWordCharacter())
                 );
 
             pattern.ToString().Should().Be(EXPECTED);

@@ -22,14 +22,10 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_More_Text_Pattern()
         {
-            const string EXPECTED = "(?:dog)*s";
+            const string EXPECTED = "s*";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("dog"),
-                        false))
-                .Text("s");
+                .ZeroOrMoreOf(p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -49,14 +45,10 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_One_Or_More_Test_Pattern()
         {
-            const string EXPECTED = "(?:cat)+s";
+            const string EXPECTED = "s+";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("cat"),
-                        false))
-                .Text("s");
+                .OneOrMoreOf(p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -76,14 +68,10 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_One_Text_Pattern()
         {
-            const string EXPECTED = "(?:duck)?s";
+            const string EXPECTED = "s?";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("duck"),
-                        false))
-                .Text("s");
+                .ZeroOrOneOf(p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -103,15 +91,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_More_As_Few_As_Possible_Text_Pattern()
         {
-            const string EXPECTED = "(?:dog)*?s";
+            const string EXPECTED = "s*?";
 
             var pattern = new RegExpPattern()
                 .ZeroOrMoreOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("dog"),
-                        false),
-                    true)
-                .Text("s");
+                    p => p.Text("s"),
+                    true);
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -131,15 +116,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_One_Or_More_As_Few_As_Possible_Test_Pattern()
         {
-            const string EXPECTED = "(?:cat)+?s";
+            const string EXPECTED = "s+?";
 
             var pattern = new RegExpPattern()
                 .OneOrMoreOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("cat"),
-                        false),
-                    true)
-                .Text("s");
+                    p => p.Text("s"),
+                    true);
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -159,15 +141,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Zero_Or_One_As_Few_As_Possible_Text_Pattern()
         {
-            const string EXPECTED = "(?:duck)??s";
+            const string EXPECTED = "s??";
 
             var pattern = new RegExpPattern()
                 .ZeroOrOneOf(
-                    p => p.GroupOf(
-                        p1 => p1.Text("duck"),
-                        false),
-                    true)
-                .Text("s");
+                    p => p.Text("s"),
+                    true);
 
             pattern.ToString().Should().Be(EXPECTED);
         }

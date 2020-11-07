@@ -32,15 +32,12 @@ namespace Acamti.RegexpBuilder.Tests
         [TestMethod]
         public void Test_Repeat_Pattern()
         {
-            const string EXPECTED = "(?:6?6?6?)";
+            const string EXPECTED = "6?6?6?";
 
             var pattern = new RegExpPattern()
-                .GroupOf(
-                    p => p.Repeat(
-                        r => r.ZeroOrOneOf(p2 => p2.Text("6")),
-                        3
-                    ),
-                    false
+                .Repeat(
+                    r => r.Text("6?", false),
+                    3
                 );
 
             pattern.ToString().Should().Be(EXPECTED);

@@ -6,7 +6,7 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class ValuesExtensions
     {
-        public static RegExpPattern Text(this RegExpPattern pattern, string value)
+        public static RegExpPattern Text(this RegExpPattern pattern, string value, bool escapeCharacter = true)
         {
             if ( string.IsNullOrEmpty(value) ) return pattern;
 
@@ -14,7 +14,12 @@ namespace Acamti.RegexpBuilder.Rules
                 .Aggregate(
                     string.Empty,
                     (seed, character) =>
-                        seed + RegExpCharacter.Build(character)
+                    {
+                        var reC = (RegExpCharacter)RegExpCharacter.Build(character);
+                        reC.EscapeChar = escapeCharacter;
+
+                        return seed + reC;
+                    }
                 );
 
             pattern.AddRule(new RegExpValue(concatChars));
