@@ -4,19 +4,6 @@ namespace Acamti.RegexpBuilder.Rules
 {
     public static class QuantifiersExtensions
     {
-        private static bool IsText(RegExpPattern ruleToExtract)
-        {
-            var text = ruleToExtract.ToString();
-
-            switch (text.Length)
-            {
-                case 1:
-                case 2 when text[0] == '\\':
-                    return false;
-                default: return true;
-            }
-        }
-
         public static RegExpPattern ZeroOrMoreOf(
             this RegExpPattern pattern,
             Func<RegExpPattern, RegExpPattern> rule,
@@ -24,26 +11,10 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            if ( IsText(ruleToExtract) )
-            {
-                var ruleToAdd = new RegExpPattern()
-                    .GroupOf(p =>
-                             {
-                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+            var ruleToAdd = new RegExpPattern();
+            ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                                 return p;
-                             },
-                             false);
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
-            else
-            {
-                var ruleToAdd = new RegExpPattern();
-                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(asFewAsPossible)}"));
 
             return pattern;
         }
@@ -65,26 +36,10 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            if ( IsText(ruleToExtract) )
-            {
-                var ruleToAdd = new RegExpPattern()
-                    .GroupOf(p =>
-                             {
-                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+            var ruleToAdd = new RegExpPattern();
+            ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                                 return p;
-                             },
-                             false);
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
-            else
-            {
-                var ruleToAdd = new RegExpPattern();
-                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(asFewAsPossible)}"));
 
             return pattern;
         }
@@ -97,26 +52,10 @@ namespace Acamti.RegexpBuilder.Rules
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            if ( IsText(ruleToExtract) )
-            {
-                var ruleToAdd = new RegExpPattern()
-                    .GroupOf(p =>
-                             {
-                                 p.AddRule(new RegExpValue(ruleToExtract.ToString()));
+            var ruleToAdd = new RegExpPattern();
+            ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
 
-                                 return p;
-                             },
-                             false);
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
-            else
-            {
-                var ruleToAdd = new RegExpPattern();
-                ruleToAdd.AddRule(new RegExpValue(ruleToExtract.ToString()));
-
-                pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(asFewAsPossible)}"));
-            }
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(asFewAsPossible)}"));
 
             return pattern;
         }

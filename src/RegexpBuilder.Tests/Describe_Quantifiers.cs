@@ -25,7 +25,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:dog)*s";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("dog"))
+                .ZeroOrMoreOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("dog"),
+                        false))
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -49,7 +52,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:cat)+s";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("cat"))
+                .OneOrMoreOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("cat"),
+                        false))
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -73,7 +79,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:duck)?s";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("duck"))
+                .ZeroOrOneOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("duck"),
+                        false))
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -97,7 +106,11 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:dog)*?s";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("dog"), true)
+                .ZeroOrMoreOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("dog"),
+                        false),
+                    true)
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -121,7 +134,11 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:cat)+?s";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("cat"), true)
+                .OneOrMoreOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("cat"),
+                        false),
+                    true)
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -145,7 +162,11 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "(?:duck)??s";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("duck"), true)
+                .ZeroOrOneOf(
+                    p => p.GroupOf(
+                        p1 => p1.Text("duck"),
+                        false),
+                    true)
                 .Text("s");
 
             pattern.ToString().Should().Be(EXPECTED);

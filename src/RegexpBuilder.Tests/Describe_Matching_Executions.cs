@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
@@ -156,7 +156,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_11()
         {
             var pattern = new RegExpPattern()
-                .MustBeginWith()
+                .AtStartOfStringOrLine()
                 .Text("hi");
 
             pattern.IsMatch("hi").Should().BeTrue();
@@ -173,7 +173,7 @@ namespace Acamti.RegexpBuilder.Tests
         {
             var pattern = new RegExpPattern()
                 .Text("hi")
-                .MustStopWith();
+                .AtEndOfStringOnly();
 
             pattern.IsMatch("hi").Should().BeTrue();
             pattern.IsMatch(" hi").Should().BeTrue();
@@ -365,7 +365,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_26()
         {
             var pattern = new RegExpPattern()
-                .Character('❎', true);
+                .Character('❎');
 
             pattern.IsMatch("❎").Should().BeTrue();
 
@@ -459,7 +459,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"^.+";
 
             var pattern = new RegExpPattern()
-                .MustBeginWith()
+                .AtStartOfStringOrLine()
                 .OneOrMoreOf(p => p.AnyCharacter());
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -517,6 +517,27 @@ namespace Acamti.RegexpBuilder.Tests
                     true,
                     false
                 );
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_35()
+        {
+            const string EXPECTED = @"\b\w+(e)?s(\s|$)";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(
+                    p => p.OneOrMoreOf(p1 => p1.AnyWordCharacter())
+                        .ZeroOrOneOf(p1 => p1.GroupOf(p2 => p2.Text("e")))
+                        .Text("s")
+                        .GroupOf(
+                            p1 => p1.Either(
+                                p2 => p2.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                                p3 => p3.AtEndOfStringOrLine()
+                            )),
+                    true,
+                    false);
 
             pattern.ToString().Should().Be(EXPECTED);
         }

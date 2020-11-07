@@ -10,12 +10,9 @@ namespace Acamti.RegexpBuilder.Rules
             params Func<RegExpPattern, RegExpPattern>[] rules)
         {
             var ruleValues = rules.Select(
-                rule =>
-                    rule.Invoke(new RegExpPattern()).ToString());
+                rule => rule.Invoke(new RegExpPattern()).ToString());
 
-            pattern.AddRule(new RegExpValue(
-                                $"{string.Join('|', ruleValues)}"
-                            ));
+            pattern.AddRule(new RegExpValue($"{string.Join('|', ruleValues)}"));
 
             return pattern;
         }

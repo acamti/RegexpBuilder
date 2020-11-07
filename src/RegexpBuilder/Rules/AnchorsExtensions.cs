@@ -66,5 +66,19 @@ namespace Acamti.RegexpBuilder.Rules
 
             return pattern;
         }
+
+        public static RegExpPattern AtEndOfStringOrLine(this RegExpPattern pattern)
+        {
+            pattern.AddRule(new RegExpValue(@"$"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern AtStartOfStringOrLine(this RegExpPattern pattern)
+        {
+            pattern.AddRule(new RegExpValue(@"^"));
+
+            return pattern;
+        }
     }
 }

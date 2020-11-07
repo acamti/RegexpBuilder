@@ -1,5 +1,4 @@
-﻿using System;
-using Acamti.RegexpBuilder.Rules;
+﻿using Acamti.RegexpBuilder.Rules;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,7 +13,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "^start";
 
             var pattern = new RegExpPattern()
-                .MustBeginWith()
+                .AtStartOfStringOrLine()
                 .Text("start");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -27,20 +26,9 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .Text("end")
-                .MustStopWith();
+                .AtEndOfStringOrLine();
 
             pattern.ToString().Should().Be(EXPECTED);
-        }
-
-        [TestMethod]
-        public void Test_End_Is_Last_Rule_Anchors_Pattern()
-        {
-            Assert.ThrowsException<Exception>(
-                () => new RegExpPattern()
-                    .Text("end")
-                    .MustStopWith()
-                    .Text("not allowed")
-            );
         }
 
         [TestMethod]

@@ -55,11 +55,10 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern Character(
             this RegExpPattern pattern,
-            char character,
-            bool asUnicodeValue
+            char character
         )
         {
-            pattern.AddRule(new RegExpValue($"{RegExpCharacter.Build(character, asUnicodeValue)}"));
+            pattern.AddRule(new RegExpValue($"{RegExpCharacter.Build(character, true)}"));
 
             return pattern;
         }

@@ -90,7 +90,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\u0064";
 
             var pattern = new RegExpPattern()
-                .Character('d', true);
+                .Character('d');
 
             pattern.ToString().Should().Be(EXPECTED);
         }
