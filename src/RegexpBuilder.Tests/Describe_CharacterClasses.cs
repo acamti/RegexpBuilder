@@ -90,7 +90,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"\u0064";
 
             var pattern = new RegExpPattern()
-                .Character('d');
+                .Character('d', true);
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -131,7 +131,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "[A-Z-[N]]";
 
             var pattern = new RegExpPattern()
-                .CharacterRange('A', 'Z', 'N');
+                .CharacterRange('A', 'Z', "N");
 
             pattern.ToString().Should().Be(EXPECTED);
         }

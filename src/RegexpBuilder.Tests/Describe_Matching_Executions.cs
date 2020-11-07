@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using Acamti.RegexpBuilder.Rules;
 using Acamti.RegexpBuilder.Types;
@@ -241,7 +241,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_18()
         {
             var pattern = new RegExpPattern()
-                .CharacterRange('A', 'Z', 'N');
+                .CharacterRange('A', 'Z', "NJ");
 
             pattern.IsMatch("A").Should().BeTrue();
             pattern.IsMatch("B").Should().BeTrue();
@@ -251,6 +251,7 @@ namespace Acamti.RegexpBuilder.Tests
             pattern.IsMatch("").Should().BeFalse();
             pattern.IsMatch("a").Should().BeFalse();
             pattern.IsMatch("N").Should().BeFalse();
+            pattern.IsMatch("J").Should().BeFalse();
             pattern.IsMatch("z").Should().BeFalse();
         }
 
@@ -538,6 +539,46 @@ namespace Acamti.RegexpBuilder.Tests
                             )),
                     true,
                     false);
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_36()
+        {
+            const string EXPECTED = @"^(\(?\d{3}\)?[\s-])?\d{3}-\d{4}$";
+
+            var pattern = new RegExpPattern()
+                .AtStartOfStringOrLine()
+                .ZeroOrOneOf(
+                    p => p.GroupOf(
+                        p1 => p1
+                            .ZeroOrOneOf(p2 => p2.Character('('))
+                            .Time(p2 => p2.AnyOneDigit(), 3)
+                            .ZeroOrOneOf(p2 => p2.Character(')'))
+                            .AnyCharacter(
+                                RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                                RegExpCharacter.Build('-'))))
+                .Time(p => p.AnyOneDigit(), 3)
+                .Text("-")
+                .Time(p => p.AnyOneDigit(), 4)
+                .AtEndOfStringOrLine();
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_37()
+        {
+            const string EXPECTED = @"^[0-9-[2468]]+$";
+
+            var pattern = new RegExpPattern()
+                .OneOrMoreOf(
+                    p => p
+                        .AtStartOfStringOrLine()
+                        .CharacterRange('0', '9', "2468")
+                )
+                .AtEndOfStringOrLine();
 
             pattern.ToString().Should().Be(EXPECTED);
         }
