@@ -55,11 +55,11 @@ namespace Acamti.RegexpBuilder.Rules
             this RegExpPattern pattern,
             Func<RegExpPattern,
                 RegExpPattern> rule,
-            int from)
+            int amount)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
-            pattern.AddRule(new RegExpValue($"{ruleToAdd}{{{from}}}"));
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}{{{amount}}}"));
 
             return pattern;
         }
@@ -74,6 +74,19 @@ namespace Acamti.RegexpBuilder.Rules
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
             pattern.AddRule(new RegExpValue($"{ruleToAdd}{{{from},{to}}}"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern TimeAtLeast(
+            this RegExpPattern pattern,
+            Func<RegExpPattern,
+                RegExpPattern> rule,
+            int amount)
+        {
+            var ruleToAdd = rule.Invoke(new RegExpPattern());
+
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}{{{amount},}}"));
 
             return pattern;
         }

@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Acamti.RegexpBuilder.Tests
 {
     [TestClass]
-    public class Describe_Matching_Executions
+    public class Describe_Complex_Pattern
     {
         [TestMethod]
         public void Test_IsMatch_1()
@@ -579,6 +579,49 @@ namespace Acamti.RegexpBuilder.Tests
                         .CharacterRange('0', '9', "2468")
                 )
                 .AtEndOfStringOrLine();
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_IsMatch_38()
+        {
+            const string EXPECTED = @"^((\w+(\s?)){2,}),\s(\w+\s\w+),(\s\d{4}(-(\d{4}|present))?,?)+";
+
+            var pattern = new RegExpPattern()
+                .AtStartOfStringOrLine()
+                .GroupOf(
+                    p => p.TimeAtLeast(
+                        p1 => p1.GroupOf(
+                            p2 => p2
+                                .OneOrMoreOf(p3 => p3.AnyWordCharacter())
+                                .GroupOf(
+                                    p3 => p3.ZeroOrOneOf(
+                                        p4 => p4
+                                            .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)))),
+                        2))
+                .Text(",")
+                .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
+                .GroupOf(
+                    p => p
+                        .OneOrMoreOf(p1 => p1.AnyWordCharacter())
+                        .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
+                        .OneOrMoreOf(p1 => p1.AnyWordCharacter()))
+                .Text(",")
+                .OneOrMoreOf(
+                    y => y.GroupOf(
+                        p => p
+                            .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
+                            .Time(p1 => p1.AnyOneDigit(), 4)
+                            .ZeroOrOneOf(
+                                x => x.GroupOf(
+                                    p1 => p1
+                                        .Text("-")
+                                        .GroupOf(
+                                            p2 => p2.Either(
+                                                p3 => p3.Time(p4 => p4.AnyOneDigit(), 4),
+                                                p3 => p3.Text("present")))))
+                            .ZeroOrOneOf(p1 => p1.Text(","))));
 
             pattern.ToString().Should().Be(EXPECTED);
         }

@@ -172,5 +172,16 @@ namespace Acamti.RegexpBuilder.Tests
 
             pattern.ToString().Should().Be(EXPECTED);
         }
+
+        [TestMethod]
+        public void Test_TimeAtLeast_Pattern()
+        {
+            const string EXPECTED = "A{3,}";
+
+            var pattern = new RegExpPattern()
+                .TimeAtLeast(p => p.Text("A"), 3);
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
     }
 }
