@@ -15,47 +15,77 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern ZeroOrMoreOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            bool asFewAsPossible = false)
+            bool isFewAsPossible,
+            bool isGrouped,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
-            pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(asFewAsPossible)}"));
+            if ( isGrouped )
+            {
+                var groupedRuleToAdd = new RegExpPattern()
+                    .GroupOf(true, p => ruleToAdd);
+
+                pattern.AddRule(new RegExpValue($"{groupedRuleToAdd}*{GetFewAsPossibleValue(isFewAsPossible)}"));
+
+                return pattern;
+            }
+
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}*{GetFewAsPossibleValue(isFewAsPossible)}"));
 
             return pattern;
         }
 
         public static RegExpPattern OneOrMoreOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern,
-                RegExpPattern> rule,
-            bool asFewAsPossible = false)
+            bool isFewAsPossible,
+            bool isGrouped,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
-            pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(asFewAsPossible)}"));
+            if ( isGrouped )
+            {
+                var groupedRuleToAdd = new RegExpPattern()
+                    .GroupOf(true, p => ruleToAdd);
+
+                pattern.AddRule(new RegExpValue($"{groupedRuleToAdd}+{GetFewAsPossibleValue(isFewAsPossible)}"));
+
+                return pattern;
+            }
+
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}+{GetFewAsPossibleValue(isFewAsPossible)}"));
 
             return pattern;
         }
 
         public static RegExpPattern ZeroOrOneOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern,
-                RegExpPattern> rule,
-            bool asFewAsPossible = false)
+            bool isFewAsPossible,
+            bool isGrouped,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
-            pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(asFewAsPossible)}"));
+            if ( isGrouped )
+            {
+                var groupedRuleToAdd = new RegExpPattern()
+                    .GroupOf(true, p => ruleToAdd);
+
+                pattern.AddRule(new RegExpValue($"{groupedRuleToAdd}?{GetFewAsPossibleValue(isFewAsPossible)}"));
+
+                return pattern;
+            }
+
+            pattern.AddRule(new RegExpValue($"{ruleToAdd}?{GetFewAsPossibleValue(isFewAsPossible)}"));
 
             return pattern;
         }
 
         public static RegExpPattern Time(
             this RegExpPattern pattern,
-            Func<RegExpPattern,
-                RegExpPattern> rule,
-            int amount)
+            int amount,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
@@ -66,10 +96,9 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern Time(
             this RegExpPattern pattern,
-            Func<RegExpPattern,
-                RegExpPattern> rule,
             int from,
-            int to)
+            int to,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 
@@ -80,9 +109,8 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern TimeAtLeast(
             this RegExpPattern pattern,
-            Func<RegExpPattern,
-                RegExpPattern> rule,
-            int amount)
+            int amount,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToAdd = rule.Invoke(new RegExpPattern());
 

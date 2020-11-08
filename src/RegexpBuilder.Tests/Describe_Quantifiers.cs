@@ -13,7 +13,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a*b";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("a"))
+                .ZeroOrMoreOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -25,7 +25,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s*";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("s"));
+                .ZeroOrMoreOf(false, false, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -36,7 +36,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a+b";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("a"))
+                .OneOrMoreOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -48,7 +48,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s+";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("s"));
+                .OneOrMoreOf(false, false, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -59,7 +59,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a?b";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("a"))
+                .ZeroOrOneOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -71,7 +71,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s?";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("s"));
+                .ZeroOrOneOf(false, false, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -82,7 +82,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a*?b";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("a"), true)
+                .ZeroOrMoreOf(true, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -94,9 +94,40 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s*?";
 
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(
-                    p => p.Text("s"),
-                    true);
+                .ZeroOrMoreOf(true, false, p => p.Text("s"));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_More_Grouped_Text_Pattern()
+        {
+            const string EXPECTED = "(s)*";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrMoreOf(false, true, p => p.Text("s"));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_One_Or_More_Grouped_Text_Pattern()
+        {
+            const string EXPECTED = "(s)+";
+
+            var pattern = new RegExpPattern()
+                .OneOrMoreOf(false, true, p => p.Text("s"));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Zero_Or_One_Grouped_Text_Pattern()
+        {
+            const string EXPECTED = "(s)?";
+
+            var pattern = new RegExpPattern()
+                .ZeroOrOneOf(false, true, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -107,7 +138,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a+?b";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("a"), true)
+                .OneOrMoreOf(true, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -119,9 +150,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s+?";
 
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(
-                    p => p.Text("s"),
-                    true);
+                .OneOrMoreOf(true, false, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -132,7 +161,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "a??b";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("a"), true)
+                .ZeroOrOneOf(true, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -144,9 +173,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "s??";
 
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(
-                    p => p.Text("s"),
-                    true);
+                .ZeroOrOneOf(true, false, p => p.Text("s"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -157,7 +184,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "A{3}";
 
             var pattern = new RegExpPattern()
-                .Time(p => p.Text("A"), 3);
+                .Time(3, p => p.Text("A"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -168,7 +195,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "A{1,3}";
 
             var pattern = new RegExpPattern()
-                .Time(p => p.Text("A"), 1, 3);
+                .Time(1, 3, p => p.Text("A"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -179,7 +206,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "A{3,}";
 
             var pattern = new RegExpPattern()
-                .TimeAtLeast(p => p.Text("A"), 3);
+                .TimeAtLeast(3, p => p.Text("A"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }

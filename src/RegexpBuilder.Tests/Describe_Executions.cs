@@ -14,7 +14,7 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .Text("-")
-                .Repeat(p => p.Text("\\d", false), 3)
+                .Repeat(3, p => p.Text("\\d", false))
                 .Text("-");
 
             pattern.Split("012-345-6789").Should().BeEquivalentTo(expected);

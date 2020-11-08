@@ -29,16 +29,15 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern Repeat(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            int time)
+            int time,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var rules = Enumerable
                 .Range(0, time)
                 .Select(_ => rule.Invoke(new RegExpPattern()));
 
             pattern.AddRule(
-                new RegExpValue(
-                    $"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}")
+                new RegExpValue($"{rules.Aggregate("", (seed, r) => $"{seed}{r}")}")
             );
 
             return pattern;

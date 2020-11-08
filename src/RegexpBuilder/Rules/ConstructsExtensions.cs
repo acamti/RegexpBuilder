@@ -7,12 +7,22 @@ namespace Acamti.RegexpBuilder.Rules
     {
         public static RegExpPattern Either(
             this RegExpPattern pattern,
+            bool isGrouped,
             params Func<RegExpPattern, RegExpPattern>[] rules)
         {
-            var ruleValues = rules.Select(
-                rule => rule.Invoke(new RegExpPattern()).ToString());
+            var ruleValues = rules
+                .Select(rule => rule.Invoke(new RegExpPattern()).ToString());
 
-            pattern.AddRule(new RegExpValue($"{string.Join('|', ruleValues)}"));
+            var beginningGroupRule = isGrouped
+                ? "("
+                : string.Empty;
+
+            var endingGroupRule = isGrouped
+                ? @")"
+                : string.Empty;
+
+            pattern.AddRule(
+                new RegExpValue($"{beginningGroupRule}{string.Join('|', ruleValues)}{endingGroupRule}"));
 
             return pattern;
         }
@@ -52,13 +62,13 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern GroupOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            bool capture = true)
+            bool isCaptured,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 
             pattern.AddRule(
-                capture
+                isCaptured
                     ? new RegExpValue($"({ruleToGroup})")
                     : new RegExpValue($"(?:{ruleToGroup})"));
 
@@ -67,8 +77,8 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern GroupOf(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            string name)
+            string name,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToGroup = rule.Invoke(new RegExpPattern());
 

@@ -38,9 +38,20 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
-                    p => p
-                        .Text("are")
-                );
+                    true,
+                    true,
+                    p => p.Text("are"));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Word_Boundary_Auto_Pattern()
+        {
+            const string EXPECTED = @"\bare\b";
+
+            var pattern = new RegExpPattern()
+                .WithWordBoundary(p => p.Text("are"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -52,12 +63,11 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
+                    true,
+                    false,
                     p => p
                         .Text("word")
-                        .Text("123"),
-                    true,
-                    false
-                );
+                        .Text("123"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -69,17 +79,31 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
+                    false,
+                    true,
                     p => p
                         .Text("word")
-                        .Text("123"),
-                    false
-                );
+                        .Text("123"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
 
         [TestMethod]
         public void Test_Non_Word_Boundary_Pattern()
+        {
+            const string EXPECTED = @"\Bgame\B";
+
+            var pattern = new RegExpPattern()
+                .WithNonWordBoundary(
+                    true,
+                    true,
+                    p => p.Text("game"));
+
+            pattern.ToString().Should().Be(EXPECTED);
+        }
+
+        [TestMethod]
+        public void Test_Non_Word_Boundary_Auto_Pattern()
         {
             const string EXPECTED = @"\Bgame\B";
 
@@ -96,11 +120,9 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
-                    p =>
-                        p.Text("ed"),
                     true,
-                    false
-                );
+                    false,
+                    p => p.Text("ed"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -111,7 +133,10 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"Wo\b";
 
             var pattern = new RegExpPattern()
-                .WithWordBoundary(p => p.Text("Wo"), false);
+                .WithWordBoundary(
+                    false,
+                    true,
+                    p => p.Text("Wo"));
 
             pattern.ToString().Should().Be(EXPECTED);
         }

@@ -14,6 +14,7 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .Either(
+                    false,
                     i => i.Text("him"),
                     i => i.Text("her")
                 );
@@ -45,9 +46,9 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X(\d)F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.Text("\\d", false))
+                .GroupOf(true, p => p.Text("\\d", false))
                 .Text("X")
-                .GroupOf(p => p.Text("\\d", false))
+                .GroupOf(true, p => p.Text("\\d", false))
                 .Text("F");
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -59,7 +60,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\d)X\1F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.Text("\\d", false))
+                .GroupOf(true, p => p.Text("\\d", false))
                 .Text("X")
                 .ValueFromGroup(1)
                 .Text("F");
@@ -73,7 +74,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(?<One>\d)x\k<One>F";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.Text("\\d", false), "One")
+                .GroupOf("One", p => p.Text("\\d", false))
                 .Text("x")
                 .ValueFromGroup("One")
                 .Text("F");

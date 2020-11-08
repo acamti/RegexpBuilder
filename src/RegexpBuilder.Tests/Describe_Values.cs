@@ -35,10 +35,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = "6?6?6?";
 
             var pattern = new RegExpPattern()
-                .Repeat(
-                    r => r.Text("6?", false),
-                    3
-                );
+                .Repeat(3, r => r.Text("6?", false));
 
             pattern.ToString().Should().Be(EXPECTED);
         }

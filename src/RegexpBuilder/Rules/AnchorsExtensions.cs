@@ -6,18 +6,44 @@ namespace Acamti.RegexpBuilder.Rules
     {
         public static RegExpPattern WithWordBoundary(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            bool beginningBoundary = true,
-            bool endingBoundary = true)
+            bool atStart,
+            bool atEnd,
+            Func<RegExpPattern, RegExpPattern> rule)
         {
             var ruleToExtract = rule.Invoke(new RegExpPattern());
 
-            var beginningBoundaryRule = beginningBoundary
+            var beginningBoundaryRule = atStart
                 ? @"\b"
                 : string.Empty;
 
-            var endingBoundaryRule = endingBoundary
+            var endingBoundaryRule = atEnd
                 ? @"\b"
+                : string.Empty;
+
+            pattern.AddRule(new RegExpValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}"));
+
+            return pattern;
+        }
+
+        public static RegExpPattern WithWordBoundary(
+            this RegExpPattern pattern,
+            Func<RegExpPattern, RegExpPattern> rule) =>
+            pattern.WithWordBoundary(true, true, rule);
+
+        public static RegExpPattern WithNonWordBoundary(
+            this RegExpPattern pattern,
+            bool atStart,
+            bool atEnd,
+            Func<RegExpPattern, RegExpPattern> rule)
+        {
+            var ruleToExtract = rule.Invoke(new RegExpPattern());
+
+            var beginningBoundaryRule = atStart
+                ? @"\B"
+                : string.Empty;
+
+            var endingBoundaryRule = atEnd
+                ? @"\B"
                 : string.Empty;
 
             pattern.AddRule(new RegExpValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}"));
@@ -27,24 +53,8 @@ namespace Acamti.RegexpBuilder.Rules
 
         public static RegExpPattern WithNonWordBoundary(
             this RegExpPattern pattern,
-            Func<RegExpPattern, RegExpPattern> rule,
-            bool beginningBoundary = true,
-            bool endingBoundary = true)
-        {
-            var ruleToExtract = rule.Invoke(new RegExpPattern());
-
-            var beginningBoundaryRule = beginningBoundary
-                ? @"\B"
-                : string.Empty;
-
-            var endingBoundaryRule = endingBoundary
-                ? @"\B"
-                : string.Empty;
-
-            pattern.AddRule(new RegExpValue($"{beginningBoundaryRule}{ruleToExtract}{endingBoundaryRule}"));
-
-            return pattern;
-        }
+            Func<RegExpPattern, RegExpPattern> rule) =>
+            pattern.WithNonWordBoundary(true, true, rule);
 
         public static RegExpPattern ByOnlyMatchingWherePreviousMatchEnded(this RegExpPattern pattern)
         {

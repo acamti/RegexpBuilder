@@ -26,7 +26,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_2()
         {
             var pattern = new RegExpPattern()
-                .ZeroOrMoreOf(p => p.Text("a"))
+                .ZeroOrMoreOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -41,7 +41,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_3()
         {
             var pattern = new RegExpPattern()
-                .OneOrMoreOf(p => p.Text("a"))
+                .OneOrMoreOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.IsMatch("ab").Should().BeTrue();
@@ -56,7 +56,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_4()
         {
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("a"))
+                .ZeroOrOneOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -71,7 +71,7 @@ namespace Acamti.RegexpBuilder.Tests
         public void Test_IsMatch_5()
         {
             var pattern = new RegExpPattern()
-                .ZeroOrOneOf(p => p.Text("a"))
+                .ZeroOrOneOf(false, false, p => p.Text("a"))
                 .Text("b");
 
             pattern.IsMatch("b").Should().BeTrue();
@@ -126,6 +126,7 @@ namespace Acamti.RegexpBuilder.Tests
         {
             var pattern = new RegExpPattern()
                 .Either(
+                    false,
                     s1 => s1.Text("him"),
                     s2 => s2.Text("her"));
 
@@ -191,8 +192,10 @@ namespace Acamti.RegexpBuilder.Tests
                 .WithWordBoundary(
                     p => p
                         .Text("are")
-                        .ZeroOrMoreOf(p2 => p2.AnyWordCharacter())
-                );
+                        .ZeroOrMoreOf(
+                            false,
+                            false,
+                            p2 => p2.AnyWordCharacter()));
 
             pattern.IsMatch("area").Should().BeTrue();
             pattern.IsMatch("arena").Should().BeTrue();
@@ -206,12 +209,11 @@ namespace Acamti.RegexpBuilder.Tests
         {
             var pattern = new RegExpPattern()
                 .WithNonWordBoundary(
+                    true,
+                    false,
                     p => p
                         .Text("qu")
-                        .OneOrMoreOf(p2 => p2.AnyWordCharacter()),
-                    true,
-                    false
-                );
+                        .OneOrMoreOf(false, false, p2 => p2.AnyWordCharacter()));
 
             pattern.IsMatch("equity").Should().BeTrue();
             pattern.IsMatch("equip").Should().BeTrue();
@@ -341,6 +343,8 @@ namespace Acamti.RegexpBuilder.Tests
                     p =>
                         p.CharacterRange('A', 'Z')
                             .ZeroOrMoreOf(
+                                false,
+                                false,
                                 p2 => p2.AnyWordCharacter()));
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -356,8 +360,7 @@ namespace Acamti.RegexpBuilder.Tests
                     p => p
                         .Text("th")
                         .AnyCharacterOtherThan(RegExpCharacter.Build('o'))
-                        .OneOrMoreOf(p3 => p3.AnyWordCharacter())
-                );
+                        .OneOrMoreOf(false, false, p3 => p3.AnyWordCharacter()));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -403,13 +406,26 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .ByOnlyMatchingWherePreviousMatchEnded()
                 .GroupOf(
-                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()))
+                    true,
+                    p => p.OneOrMoreOf(
+                        false,
+                        false,
+                        p2 => p2.AnyCharacter())
+                )
                 .AnyCharacter(
                     RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.Tab),
                     RegExpCharacter.Build('|', true))
                 .GroupOf(
-                    p1 => p1.OneOrMoreOf(p2 => p2.AnyCharacter()))
-                .ZeroOrOneOf(p => p.Character(EscapeCharacter.EscapeCharacterType.CarriageReturn))
+                    true,
+                    p => p
+                        .OneOrMoreOf(
+                            false,
+                            false,
+                            p2 => p2.AnyCharacter()))
+                .ZeroOrOneOf(
+                    false,
+                    false,
+                    p => p.Character(EscapeCharacter.EscapeCharacterType.CarriageReturn))
                 .Character(EscapeCharacter.EscapeCharacterType.NewLine);
 
             pattern.ToString().Should().Be(EXPECTED_REGEX_PATTERN);
@@ -444,8 +460,9 @@ namespace Acamti.RegexpBuilder.Tests
                 .Text("y")
                 .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
                 .OneOrMoreOf(
-                    p => p.Character(EscapeCharacter.EscapeCharacterType.NonWhiteSpace),
-                    true
+                    true,
+                    false,
+                    p => p.Character(EscapeCharacter.EscapeCharacterType.NonWhiteSpace)
                 )
                 .AnyCharacter(
                     RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.WhiteSpace),
@@ -461,7 +478,7 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .AtStartOfStringOrLine()
-                .OneOrMoreOf(p => p.AnyCharacter());
+                .OneOrMoreOf(false, false, p => p.AnyCharacter());
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -473,17 +490,18 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
-                    p => p
-                        .ZeroOrMoreOf(p2 => p2.AnyCharacter())
-                        .AnyCharacter(".?!;:")
-                        .GroupOf(
-                            p2 => p2
-                                .Either(
-                                    p3 => p3.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
-                                    p3 => p3.AtEndOfStringOnly()
-                                )),
                     true,
-                    false);
+                    false,
+                    p => p
+                        .ZeroOrMoreOf(
+                            false,
+                            false,
+                            p2 => p2.AnyCharacter())
+                        .AnyCharacter(".?!;:")
+                        .Either(
+                            true,
+                            p3 => p3.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                            p3 => p3.AtEndOfStringOnly()));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -494,7 +512,7 @@ namespace Acamti.RegexpBuilder.Tests
             const string EXPECTED = @"(\w)\1";
 
             var pattern = new RegExpPattern()
-                .GroupOf(p => p.AnyWordCharacter())
+                .GroupOf(true, p => p.AnyWordCharacter())
                 .ValueFromGroup(1);
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -507,17 +525,21 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
-                    p => p.GroupOf(
-                            p1 => p1.OneOrMoreOf(
-                                p2 => p2.AnyWordCharacter()))
-                        .Time(
-                            p1 => p1.GroupOf(
-                                p2 => p2.AnyNonWordCharacter()),
-                            1,
-                            2),
                     true,
-                    false
-                );
+                    false,
+                    p => p.GroupOf(
+                            true,
+                            p1 => p1
+                                .OneOrMoreOf(
+                                    false,
+                                    false,
+                                    p2 => p2.AnyWordCharacter())
+                        )
+                        .Time(1,
+                              2,
+                              p1 => p1.GroupOf(
+                                  true,
+                                  p2 => p2.AnyNonWordCharacter())));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -529,16 +551,18 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .WithWordBoundary(
-                    p => p.OneOrMoreOf(p1 => p1.AnyWordCharacter())
-                        .ZeroOrOneOf(p1 => p1.GroupOf(p2 => p2.Text("e")))
-                        .Text("s")
-                        .GroupOf(
-                            p1 => p1.Either(
-                                p2 => p2.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
-                                p3 => p3.AtEndOfStringOrLine()
-                            )),
                     true,
-                    false);
+                    false,
+                    p => p.OneOrMoreOf(false, false, p1 => p1.AnyWordCharacter())
+                        .ZeroOrOneOf(
+                            false,
+                            true,
+                            p1 => p1.Text("e"))
+                        .Text("s")
+                        .Either(
+                            true,
+                            p2 => p2.Character(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                            p3 => p3.AtEndOfStringOrLine()));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
@@ -551,17 +575,23 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .AtStartOfStringOrLine()
                 .ZeroOrOneOf(
-                    p => p.GroupOf(
-                        p1 => p1
-                            .ZeroOrOneOf(p2 => p2.Character('('))
-                            .Time(p2 => p2.AnyOneDigit(), 3)
-                            .ZeroOrOneOf(p2 => p2.Character(')'))
-                            .AnyCharacter(
-                                RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.WhiteSpace),
-                                RegExpCharacter.Build('-'))))
-                .Time(p => p.AnyOneDigit(), 3)
+                    false,
+                    true,
+                    p => p.ZeroOrOneOf(
+                            false,
+                            false,
+                            p2 => p2.Character('('))
+                        .Time(3, p2 => p2.AnyOneDigit())
+                        .ZeroOrOneOf(
+                            false,
+                            false,
+                            p2 => p2.Character(')'))
+                        .AnyCharacter(
+                            RegExpEscapeCharacter.Build(EscapeCharacter.EscapeCharacterType.WhiteSpace),
+                            RegExpCharacter.Build('-')))
+                .Time(3, p => p.AnyOneDigit())
                 .Text("-")
-                .Time(p => p.AnyOneDigit(), 4)
+                .Time(4, p => p.AnyOneDigit())
                 .AtEndOfStringOrLine();
 
             pattern.ToString().Should().Be(EXPECTED);
@@ -574,6 +604,8 @@ namespace Acamti.RegexpBuilder.Tests
 
             var pattern = new RegExpPattern()
                 .OneOrMoreOf(
+                    false,
+                    false,
                     p => p
                         .AtStartOfStringOrLine()
                         .CharacterRange('0', '9', "2468")
@@ -591,37 +623,49 @@ namespace Acamti.RegexpBuilder.Tests
             var pattern = new RegExpPattern()
                 .AtStartOfStringOrLine()
                 .GroupOf(
+                    true,
                     p => p.TimeAtLeast(
+                        2,
                         p1 => p1.GroupOf(
+                            true,
                             p2 => p2
-                                .OneOrMoreOf(p3 => p3.AnyWordCharacter())
+                                .OneOrMoreOf(
+                                    false,
+                                    false,
+                                    p3 => p3.AnyWordCharacter())
                                 .GroupOf(
+                                    true,
                                     p3 => p3.ZeroOrOneOf(
+                                        false,
+                                        false,
                                         p4 => p4
-                                            .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)))),
-                        2))
+                                            .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace))))))
                 .Text(",")
                 .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
                 .GroupOf(
+                    true,
                     p => p
-                        .OneOrMoreOf(p1 => p1.AnyWordCharacter())
+                        .OneOrMoreOf(false, false, p1 => p1.AnyWordCharacter())
                         .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
-                        .OneOrMoreOf(p1 => p1.AnyWordCharacter()))
+                        .OneOrMoreOf(false, false, p1 => p1.AnyWordCharacter()))
                 .Text(",")
                 .OneOrMoreOf(
-                    y => y.GroupOf(
-                        p => p
-                            .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
-                            .Time(p1 => p1.AnyOneDigit(), 4)
-                            .ZeroOrOneOf(
-                                x => x.GroupOf(
-                                    p1 => p1
-                                        .Text("-")
-                                        .GroupOf(
-                                            p2 => p2.Either(
-                                                p3 => p3.Time(p4 => p4.AnyOneDigit(), 4),
-                                                p3 => p3.Text("present")))))
-                            .ZeroOrOneOf(p1 => p1.Text(","))));
+                    false,
+                    true,
+                    y => y
+                        .Character(EscapeCharacter.EscapeCharacterType.WhiteSpace)
+                        .Time(4, p1 => p1.AnyOneDigit())
+                        .ZeroOrOneOf(
+                            false,
+                            true,
+                            x => x.Text("-")
+                                .Either(
+                                    true,
+                                    p3 => p3.Time(
+                                        4,
+                                        p4 => p4.AnyOneDigit()),
+                                    p3 => p3.Text("present")))
+                        .ZeroOrOneOf(false, false, p1 => p1.Text(",")));
 
             pattern.ToString().Should().Be(EXPECTED);
         }
