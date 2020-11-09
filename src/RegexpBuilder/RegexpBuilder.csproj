@@ -4,7 +4,18 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AssemblyName>Acamti.RegexpBuilder</AssemblyName>
         <RootNamespace>Acamti.RegexpBuilder</RootNamespace>
-        <Company>Acam Services et Conseils TI</Company>
+        <Company>ACAM Services et Conseils TI</Company>
+        <PackageVersion>1.0.0-beta.1</PackageVersion>
+        <Title>RegexpBuilder</Title>
+        <Authors>Manuel Mayer</Authors>
+        <Description>Generates regular expression fluently</Description>
+        <Copyright>ACAM Services et Conseils TI</Copyright>
+        <PackageProjectUrl>https://www.nuget.org/packages/Acamti.RegexpBuilder/</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/acamti/RegexpBuilder/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/acamti/RegexpBuilder</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>regex regexp fluent builder</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
 </Project>
